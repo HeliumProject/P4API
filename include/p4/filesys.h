@@ -16,6 +16,7 @@
  *	FileSys::Create() - create a FileSys, given its file type
  *	FileSys::CreateTemp() - create, destructor deletes the file
  *	FileSys::CreateGloablTemp() - Temp, constructor makes a global name
+ *	FileSys::FileExists() - does the passed filepath exist in the file system
  *	FileSys::Perm() - translate string perm to enum
  *
  * Public methods:
@@ -51,6 +52,7 @@
  *
  *	FileSys::GetFd() - return underlying int fd, FST_BINARY only
  *	FileSys::GetSize() - return file size, FST_BINARY,TEXT,ATEXT only
+ *	FileSys::GetOwner() - return the UID of the file owner
  *	FileSys::GetDiskSpace() - fill in data about filesystem space usage.
  *	FileSys::Seek() - seek to offset, FST_BINARY,TEXT,ATEXT only
  *	FileSys::Tell() - file position, FST_BINARY,TEXT,ATEXT only
@@ -142,13 +144,18 @@ enum FileStatFlags {
 
 enum FileOpenMode {
 	FOM_READ,		// open for reading
-	FOM_WRITE		// open for writing
+	FOM_WRITE,		// open for writing
+	FOM_RW			// open for write, but don't trunc, allow read
 } ;
 
 enum FilePerm {
 	FPM_RO,		// leave file read-only
 	FPM_RW,		// leave file read-write
-	FPM_ROO		// leave file read-only (owner)
+	FPM_ROO,	// leave file read-only (owner)
+	// following two enums are for key file and dir permissions
+	FPM_RXO,	// set file read-execute (owner) NO W
+	FPM_RWO,	// set file read-write (owner) NO X
+	FPM_RWXO	// set file read-write-execute (owner)
 } ;
 
 class StrArray;
@@ -193,7 +200,11 @@ class FileSys {
 
 	static FilePerm Perm( const char *p );
 
+	static bool     FileExists( const char *p );
+
 	static int	BufferSize();
+
+	virtual void	SetBufferSize( size_t ) { }
 
 	int		IsUnderPath( const StrPtr &path );
 
@@ -256,6 +267,7 @@ class FileSys {
 	virtual int	Read( char *buf, int len, Error *e ) = 0;
 	virtual void	Close( Error *e ) = 0;
 
+
 	virtual int	Stat() = 0;
 	virtual int	StatModTime() = 0;
 	virtual void	Truncate( Error *e ) = 0;
@@ -265,8 +277,9 @@ class FileSys {
 	virtual void	ChmodTime( Error *e ) = 0;
 
 	// NB: these for ReadFile only; interface will likely change
-
+	virtual bool	HasOnlyPerm( FilePerm perms );
 	virtual int	GetFd();
+	virtual int     GetOwner();
 	virtual offL_t	GetSize();
 	virtual void	Seek( offL_t offset, Error * );
 	virtual offL_t	Tell();
@@ -304,7 +317,7 @@ class FileSys {
 	virtual void	RmDir( const StrPtr &p, Error *e );
 	void		RmDir( Error *e = 0 ) { RmDir( path, e ); }
 
-	FileSysType	CheckType();
+	FileSysType	CheckType( int scan = -1 );
 
 # if defined ( OS_MACOSX )
 	FileSysType	CheckTypeMac();

@@ -453,6 +453,8 @@ class StrFixed : public StrPtr {
 
 		~StrFixed()
 		{ delete []buffer; }
+
+	void	SetBufferSize( size_t l );
 } ;
 
 
@@ -489,6 +491,8 @@ class StrNum : public StrPtr {
 
 # ifdef HAVE_INT64
 
+		StrNum( long v ) { Set( (P4INT64)v ); }
+
 		StrNum( P4INT64 v )
 		{ Set( v ); }
 
@@ -502,5 +506,4 @@ class StrNum : public StrPtr {
 
     private:
 		char buf[24];
-
 } ;

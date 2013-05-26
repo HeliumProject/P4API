@@ -41,6 +41,7 @@
  * NEED_ACCESS - access()
  * NEED_BRK - brk()/sbrk()
  * NEED_CHDIR - chdir()
+ * NEED_CRITSEC - Critical Sections, just Windows for now
  * NEED_DBGBREAK - DebugBreak(), just Windows for now
  * NEED_EBCDIC - __etoa, __atoe
  * NEED_ERRNO - errno, strerror
@@ -65,6 +66,7 @@
  * NEED_SOCKETPAIR - pipe(), socketpair()
  * NEED_SYSLOG - syslog()
  * NEED_TIME - time(), etc
+ * NEED_TIME_HP - High Precision time, such as gettimeofday, clock_gettime, etc.
  * NEED_TYPES - off_t, etc (always set)
  * NEED_UTIME - utime()
  */
@@ -101,7 +103,7 @@
 # endif
 
 # if defined( NEED_GETUID )
-# ifdef unix 
+# if defined ( OS_MACOSX ) || defined ( OS_DARWIN ) || defined ( unix )
 # define HAVE_GETUID
 # endif
 # endif
@@ -135,26 +137,45 @@ extern int errno;
 # include <fcntl.h>
 # endif
 
-// This must be one of the first occurances for including windows.h
+// This must be one of the first occurrences for including windows.h
 // so that _WIN32_WINNT will flavor definitions.
-//
+# ifdef OS_NT
+# define WIN32_LEAN_AND_MEAN
+// current default is WinXP; IPv6 code must set these macros to WinVista
+// before including this file (see net/netportipv6.h for details)
+# if !defined(NTDDI_VERSION) || (NTDDI_VERSION < 0x0501000)
+#   undef NTDDI_VERSION
+#   define NTDDI_VERSION    0x0501000
+# endif // NTDDI_VERSION
+# if !defined(_WIN32_WINNT) || (_WIN32_WINNT < 0x0501)
+#   undef _WIN32_WINNT
+#   define _WIN32_WINNT     0x0501
+# endif // _WIN32_WINNT
+# if !defined(WINVER) || (WINVER < _WIN32_WINNT)
+#   undef WINVER
+#   define WINVER           _WIN32_WINNT
+# endif // WINVER
+# endif // OS_NT
+
+# ifdef OS_NT
+# define HAVE_CRITSEC
+# ifdef NEED_CRITSEC
+# define WIN32_LEAN_AND_MEAN
+# include <windows.h>
+# endif // NEED_CRITSEC
+# endif // OS_NT
+
 # ifdef OS_NT
 # define HAVE_DBGBREAK
 # ifdef NEED_DBGBREAK
 # define WIN32_LEAN_AND_MEAN
-# define _WIN32_WINNT 0x0501
 # include <windows.h>
 # endif // NEED_DBGBREAK
 # endif // OS_NT
 
-// This must be one of the first occurances for including windows.h
-// so that _WIN32_WINNT will flavor definitions.
-//
 # ifdef NEED_SMARTHEAP
 # if defined( USE_SMARTHEAP )
 # ifdef OS_NT
-# define WIN32_LEAN_AND_MEAN
-# define _WIN32_WINNT 0x0501
 # include <windows.h>
 # endif // OS_NT
 # include <smrtheap.h>
@@ -264,6 +285,15 @@ extern "C" int __stdcall gethostname( char * name, int namelen );
 # endif /* NT */
 # endif /* IOCTL */
 
+# ifdef ACCESSPERMS
+    #define PERMSMASK ACCESSPERMS
+# else
+    #ifdef  S_IAMB
+        #define PERMSMASK S_IAMB
+    #else
+        #define PERMSMASK 0x1FF
+    #endif
+# endif
 # if defined(NEED_MKDIR) || defined(NEED_STAT) || defined(NEED_CHMOD)
 
 # ifdef OS_OS2
@@ -286,6 +316,10 @@ extern "C" int __stdcall gethostname( char * name, int namelen );
 # define PERM_0266 (S_IWRITE)
 # define PERM_0666 (S_IRUSR|S_IWRITE)
 # define PERM_0777 (S_IRUSR|S_IWRITE|S_IEXEC)
+# define PERM_0700 ( S_IRUSR | S_IWUSR | S_IXUSR )
+# define PERM_0600 ( S_IRUSR | S_IWUSR )
+# define PERM_0500 ( S_IRUSR | S_IXUSR )
+# define PERM_0400 ( S_IRUSR )
 # ifndef S_IRUSR
 # define S_IRUSR S_IREAD
 # define S_IWUSR S_IWRITE
@@ -298,6 +332,10 @@ extern "C" int __stdcall gethostname( char * name, int namelen );
 # define PERM_0266 (S_IWUSR | (S_IRGRP|S_IWGRP) | (S_IROTH|S_IWOTH))
 # define PERM_0666 ((S_IRUSR|S_IWUSR) | (S_IRGRP|S_IWGRP) | (S_IROTH|S_IWOTH))
 # define PERM_0777 (S_IRWXU | S_IRWXG | S_IRWXO)
+# define PERM_0700 ( S_IRWXU )
+# define PERM_0600 ( S_IRUSR | S_IWUSR )
+# define PERM_0500 ( S_IRUSR | S_IXUSR )
+# define PERM_0400 ( S_IRUSR )
 # endif
 
 # endif
@@ -428,6 +466,19 @@ extern "C" int socketpair(int, int, int, int*);
 # include <time.h>
 # endif
 
+# if defined(NEED_TIME_HP)
+#    if defined( OS_LINUX )
+#       define HAVE_CLOCK_GETTIME
+#    elif defined( OS_NT )
+#       define WIN32_LEAN_AND_MEAN
+#       include <windows.h>
+#       define HAVE_GETSYSTEMTIME
+#    else
+#       define HAVE_GETTIMEOFDAY
+#       include <sys/time.h>
+#    endif
+# endif
+
 # if defined(NEED_TYPES) || 1
 
 # if defined ( MAC_MWPEF )
@@ -455,11 +506,20 @@ using namespace std;
 # ifdef OS_NT
 # define WIN32_LEAN_AND_MEAN
 # include <windows.h>
-# define sleep(x) Sleep(x * 1000)
-# define usleep(x) Sleep(x)
+# define sleep(x) Sleep((x) * 1000)
+# define msleep(x) Sleep(x)
 # ifndef OS_MINGW
 typedef unsigned long useconds_t;
 # endif
+# else
+// Assumeing usleep exists everywhere other than Windows
+# define msleep(x) usleep((x) * 1000)
+# endif
+# endif
+
+# ifdef NEED_WINDOWSH
+# ifdef OS_NT
+# include <windows.h>
 # endif
 # endif
 
@@ -546,7 +606,7 @@ int truncate(const char *path, off_t length);
  */
 
 # ifdef OS_NT
-# define BadSpecFileCharList "%/<>:|"
+# define BadSpecFileCharList "%/<>:|\\"
 # else
 # define BadSpecFileCharList "%/"
 # endif

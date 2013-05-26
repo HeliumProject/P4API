@@ -92,13 +92,17 @@ class StrOps {
 	static void	StrToWild( const StrPtr &i, StrBuf &o );
 	static void	WildCompat( const StrPtr &i, StrBuf &o );
 	static void	MaskNonPrintable( const StrPtr &i, StrBuf &o );
+	static void	EncodeNonPrintable( const StrPtr &i, StrBuf &o );
+	static void	DecodeNonPrintable( const StrPtr &i, StrBuf &o );
 
 	static void 	ScrunchArgs( StrBuf &out, int argc, 
-				StrPtr *argv, int targetLength );
+				StrPtr *argv, int targetLength,
+		       		int delim = ' ', const char *unsafeChars = 0);
 
 	static void     CommonPath( StrBuf &o, int &mdir, const StrPtr &n );
 	static void     GetDepotName( const char *d, StrBuf &n );
 	static void	StripNewline( StrBuf &o );
+	static void	LFtoCRLF( const StrBuf *in, StrBuf *out );
 
 	// i18n
 

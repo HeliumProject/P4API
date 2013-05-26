@@ -101,11 +101,13 @@
 class Enviro;
 class ClientMerge;
 class ClientResolveA;
+class ClientProgress;
 
 class ClientUser {
 
     public:
-			ClientUser() { binaryStdout = 0; outputCharset = 0; }
+			ClientUser()
+			{ binaryStdout = 0; outputCharset = 0; quiet = 0; }
 	virtual		~ClientUser();
 
 	virtual void	InputData( StrBuf *strbuf, Error *e );
@@ -141,6 +143,8 @@ class ClientUser {
 	virtual void	Help( const char *const *help );
 
 	virtual FileSys	*File( FileSysType type );
+	virtual ClientProgress *CreateProgress( int );
+	virtual int	ProgressIndicator();
 
 	virtual void	Finished() {}
 
@@ -157,6 +161,7 @@ class ClientUser {
 
 	virtual void	SetOutputCharset( int );
 	virtual void	DisableTmpCleanup();
+	virtual void	SetQuiet();
 
 	// Output... and Help must use 'const char' instead of 'char'
 	// The following will cause compile time errors for using 'char'
@@ -173,8 +178,15 @@ class ClientUser {
 
     private:
 	int		binaryStdout;	// stdout is in binary mode
+	int		quiet;		// OutputInfo does nothing.
     protected:
 	int		outputCharset;	// P4CHARSET for output
+} ;
+
+class ClientUserProgress : public ClientUser {
+    public:
+	virtual ClientProgress *CreateProgress( int );
+	virtual int	ProgressIndicator();
 } ;
 
 /*

@@ -8,15 +8,17 @@
  * msgclient.h - definitions of errors for client subsystem.
  */
 
+struct ErrorId;    // forward declaration to keep VS 2010 IntelliSense happy
+
 class MsgClient {
 
     public:
 
 	static ErrorId Connect;
-	static ErrorId ZCResolve;
 	static ErrorId BadFlag;
 	static ErrorId Fatal;
 	static ErrorId ClobberFile;
+	static ErrorId FileOpenError;
 	static ErrorId MkDir;
 	static ErrorId Eof;
 	static ErrorId CantEdit;
@@ -47,6 +49,7 @@ class MsgClient {
 	static ErrorId Confirm;
 
 	static ErrorId CheckFileAssume;
+	static ErrorId CheckFileAssumeWild;
 	static ErrorId CheckFileSubst;
 	static ErrorId CheckFileCant;
 
@@ -56,4 +59,10 @@ class MsgClient {
 	static ErrorId LoginPrintTicket;
 	static ErrorId DigestMisMatch;
 	static ErrorId NotUnderPath;
+
+	// Retired ErrorIds. We need to keep these so that clients 
+	// built with newer apis can commnunicate with older servers 
+	// still sending these.
+
+	static ErrorId ZCResolve; // DEPRECATED 2013.1 removed ZeroConf
 } ;

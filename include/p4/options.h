@@ -16,7 +16,7 @@
  *		x#	- flag takes a non-neg numeric arg (-xN or -x N)
  */
 
-const int N_OPTS = 20;
+const int N_OPTS = 256;
 
 enum OptFlag {
 	// Bitwise selectors

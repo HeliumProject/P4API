@@ -29,6 +29,8 @@
 #ifndef NTSERVICE_H__
 #define NTSERVICE_H__
 
+class Error;
+
 class NtService
 {
     public:
@@ -49,7 +51,10 @@ class NtService
 
 	// Our caller's interface
 
-    	virtual void Start( int (*entryPt)( DWORD, char ** ), char *svc );
+    	virtual void Start(
+			int (*entryPt)( DWORD, char ** ),
+			char *svc,
+			Error *e);
 
     	virtual void SetStatus(   
 			states state = no_change, 

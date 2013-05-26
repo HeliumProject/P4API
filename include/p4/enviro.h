@@ -49,12 +49,13 @@ class Enviro {
 
 	void		BeServer( const StrPtr *name = 0 );
 	const char      *ServiceName();
+	static const StrPtr *GetCachedServerName();
 	void		OsServer();
 
 	void		List();
 	int		FormatVariable( int i, StrBuf *sb );
 	int		HasVariable( int i );
-	int		IsKnown( const char *nm );
+	static int	IsKnown( const char *nm );
 	void		GetVarName( int i, StrBuf &sb );
 	void		GetVarValue( int i, StrBuf &sb );
 	void		Format( const char *var, StrBuf *sb );
@@ -88,6 +89,9 @@ class Enviro {
 
 	StrBuf		configFile;
 	StrBuf		serviceName;
+
+	// used for netsslcredentials to get at service name
+	static const StrPtr *sServiceNameStrP;
 
 # ifdef OS_NT
 	KeyPair		*setKey;

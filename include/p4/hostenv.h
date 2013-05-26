@@ -27,5 +27,10 @@ class HostEnv {
 	int		GetHost( StrBuf &result );
 	int		GetUser( StrBuf &result, Enviro * = 0 );
 	int		GetTicketFile( StrBuf &result, Enviro * = 0 );
+	int		GetTrustFile( StrBuf &result, Enviro * = 0 );
 	int		GetUid( int &result );
+
+    private:
+	int		GetHomeName( const StrRef &, StrBuf &, 
+			             Enviro *, const char *varName );
 } ;

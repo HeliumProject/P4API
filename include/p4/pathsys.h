@@ -21,6 +21,8 @@
  *
  *		If root is empty, local is used.
  *		If local is empty, results are not defined.
+ *		If canonical path is empty, trailing slash is appended to path.
+ *		(Trailing slash might cause problems with Stat() on windows.)
  *		Local can begin with relative references.
  *
  *	PathSys::GetCanon() - strip root and return rest as canon

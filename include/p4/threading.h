@@ -47,6 +47,9 @@
  *
  *	Threading::Reap() - called in leader to kill children
  *
+ *	Threading::GetThreadCount() - returns the current number of threads
+ *                                    Only valid in the parent/main process!
+ *
  * The current termination ritual:
  *
  *	Someone, somewhere calls Threading::Cancel(), which is static
@@ -100,18 +103,23 @@ class Threader {
 
     friend class Threading;
 
-			Threader() { cancelled = 0; restarted = 0; }
+			Threader()
+	                { cancelled = 0; restarted = 0; threadCount = 0; }
 
 	virtual		~Threader();
 	virtual void	Launch( Thread *t );
 	virtual void	Cancel();
 	virtual void	Restart();
+	virtual void	Quiesce();
 	virtual void	Reap();
+
+	virtual int	GetThreadCount(); // varies on each system
 
 	int		cancelled;
 	int		restarted;
 	Process		*process;
 
+	int		threadCount; // not used by all implementations...
 } ;
 
 class Threading {
@@ -123,11 +131,15 @@ class Threading {
 	void		Launch( Thread *t ) { threader->Launch( t ); }
 	int		Cancelled() { return threader->cancelled; }
 	int		Restarted() { return threader->restarted; }
+	void		Quiesce() { threader->Quiesce(); }
 	void		Reap() { threader->Reap(); }
 
 	static void	Cancel() { if( current ) current->Cancel(); }
 	static void	Restart() { if( current ) current->Restart(); }
 	static int	WasCancelled() { if( current ) return current->cancelled; else return 0; }
+
+	static int	GetThreadCount()
+	                { return current ? current->GetThreadCount() : -1; }
 
     private:
 

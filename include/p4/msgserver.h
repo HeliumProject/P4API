@@ -26,10 +26,16 @@ class MsgServer {
 	static ErrorId GotUnresolved;
 	static ErrorId CantOpen;
 	static ErrorId NoDumpName;
+	static ErrorId DumpNameIsADbName;
 	static ErrorId NoCkptName;
 	static ErrorId BadJnlFlag;
 	static ErrorId BadExtraFlag;
+	static ErrorId ExtraIDUsage;
+	static ErrorId ServerIDAlreadySet;
+	static ErrorId ServerID;
+	static ErrorId NoServerID;
 	static ErrorId MetaDumpFailed;
+	static ErrorId SkippedJnls;
 	static ErrorId Password982;
 	static ErrorId BadPassword;
 	static ErrorId MustSetPassword;
@@ -45,8 +51,10 @@ class MsgServer {
 	static ErrorId ConnectBroken;
 	static ErrorId ClientOpFailed;
 	static ErrorId OnlyOneFilter;
+	static ErrorId JournalFilterBad;
 	static ErrorId Usage;
 	static ErrorId OldDiffClient;
+	static ErrorId OldReconcileClient;
 	static ErrorId Jobs982Win;
 	static ErrorId No973Wingui;
 	static ErrorId JobsDashS;
@@ -75,7 +83,7 @@ class MsgServer {
 	static ErrorId NoSuchUser;
 	static ErrorId BadPassword0;
 	static ErrorId BadPassword1;
-	static ErrorId PasswordTooShort;
+	static ErrorId PasswordTooShort2;
 	static ErrorId PasswordTooLong;
 	static ErrorId PasswordTooSimple;
 	static ErrorId NoProxyAuth;
@@ -83,7 +91,10 @@ class MsgServer {
 	static ErrorId NoSuppASflag;
 	static ErrorId NoSuppVflag;
 	static ErrorId SubmitFailed;
+	static ErrorId SubmitShelvedFailed;
 	static ErrorId SubmitIsShelved;
+	static ErrorId SubmitNeedsShelved;
+	static ErrorId SubmitShelvedHasTask;
 	static ErrorId CounterWarning;
 	static ErrorId CouldntLock;
 	static ErrorId MergesPending;
@@ -95,6 +106,10 @@ class MsgServer {
 	static ErrorId TriggerOutput;
 	static ErrorId TriggersFailed;
 	static ErrorId SubmitAborted;
+	static ErrorId SubmitShelvedAborted;
+	static ErrorId PopulateAborted;
+	static ErrorId PopulateIsVirtual;
+	static ErrorId IntegIsTask;
 	static ErrorId NoDefaultSubmit;
 	static ErrorId BadImport;
 	static ErrorId BadTransfers;
@@ -109,6 +124,7 @@ class MsgServer {
 	static ErrorId PurgeOptGone;
 	static ErrorId PurgeBadOption;
 	static ErrorId LogCommand;
+	static ErrorId LogEstimates;
 	static ErrorId Unlicensed;
 	static ErrorId TrackCommand;
 	static ErrorId NoValidLicense;
@@ -116,13 +132,21 @@ class MsgServer {
 	static ErrorId MaxUnLicensedFiles;
 	static ErrorId NoCentralLicense;
 	static ErrorId NoAuthFileCount;
+	static ErrorId ClientBadHost;
+	static ErrorId NoAuthServiceOnly;
 	static ErrorId BadServicePack;
 	static ErrorId Startup;
 	static ErrorId Shutdown;
 	static ErrorId Restarted;
 	static ErrorId Restarting;
 	static ErrorId CreatingDb;
-	static ErrorId SkippedJnls;
+	static ErrorId Quiescing;
+	static ErrorId QuiesceFailed;
+	static ErrorId ReDowngrade;
+
+	static ErrorId PropertyAdd;
+	static ErrorId PropertyDelete;
+	static ErrorId UseProperty;
 
 	static ErrorId ConfigureSet;
 	static ErrorId ConfigureUnSet;
@@ -133,8 +157,11 @@ class MsgServer {
 
 	static ErrorId CounterDelete;
 	static ErrorId CounterSet;
+	static ErrorId KeyDelete;
+	static ErrorId KeySet;
 	static ErrorId CounterGet;
 	static ErrorId CounterNotNumeric;
+	static ErrorId KeyNotNumeric;
 
 	static ErrorId DescribeFixed;
 	static ErrorId DescribeAffected;
@@ -160,7 +187,10 @@ class MsgServer {
 	static ErrorId InfoDirectory;
 	static ErrorId InfoDiskSpace;
 	static ErrorId InfoClientAddress;
+	static ErrorId InfoPeerAddress;
 	static ErrorId InfoServerAddress;
+	static ErrorId InfoServerEncryption;
+	static ErrorId InfoServerCertExpire;
 	static ErrorId InfoServerRoot;
 	static ErrorId InfoServerDate;
 	static ErrorId InfoServerVersion;
@@ -171,7 +201,10 @@ class MsgServer {
 	static ErrorId InfoClientRoot;
 	static ErrorId InfoProxyVersion;
 	static ErrorId InfoProxyAddress;
+	static ErrorId InfoProxyEncryption;
+	static ErrorId InfoProxyCertExpire;
 	static ErrorId InfoAuthServer;
+	static ErrorId InfoServerID;
 	static ErrorId InfoChangeServer;
 	static ErrorId InfoCaseHandling;
 	static ErrorId InfoMinClient;
@@ -192,6 +225,7 @@ class MsgServer {
 	static ErrorId ShelveMaxSize;
 	static ErrorId ShelveTriggersFailed;
 	static ErrorId ShelveXOpen;
+	static ErrorId ChangesShelved;
 
 	static ErrorId SpecNotCorrect;
 	static ErrorId ErrorInSpec;
@@ -202,6 +236,8 @@ class MsgServer {
 	static ErrorId SubmitComplete;
 	static ErrorId SubmitBegin;
 	static ErrorId SubmitRenamed;
+
+	static ErrorId PopulateComplete;
 
 	static ErrorId ResolveOptAuto;
 	static ErrorId ResolveOptHelp;
@@ -233,6 +269,7 @@ class MsgServer {
 
 	static ErrorId MonitorDisabled;
 	static ErrorId MonitorBadId;
+	static ErrorId TooManyCommands;
 
 	static ErrorId IstatInvalid;
 
@@ -242,6 +279,7 @@ class MsgServer {
 	static ErrorId UseAdminSpecDepot;
 	static ErrorId UseAdminDBSigs;
 	static ErrorId UseAdminImport;
+	static ErrorId UseAdminResetPassword;
 	static ErrorId UseAnnotate;
 	static ErrorId UseArchive;
 	static ErrorId UseBranch;
@@ -254,6 +292,8 @@ class MsgServer {
 	static ErrorId UseChangei;
 	static ErrorId UseChanges;
 	static ErrorId UseChanget;
+	static ErrorId UseChangeU;
+	static ErrorId UseChangeUt;
 	static ErrorId UseClient;
 	static ErrorId UseCliento;
 	static ErrorId UseClientd;
@@ -270,6 +310,7 @@ class MsgServer {
 	static ErrorId UseCstat;
 	static ErrorId UseDbpack;
 	static ErrorId UseDbstat;
+	static ErrorId UseDbverify;
 	static ErrorId UseDepot;
 	static ErrorId UseDepoto;
 	static ErrorId UseDepotd;
@@ -317,16 +358,26 @@ class MsgServer {
 	static ErrorId UseJobi;
 	static ErrorId UseJobs;
 	static ErrorId UseJobSpec;
+	static ErrorId UseKey;
+	static ErrorId UseKeyi;
+	static ErrorId UseKeys;
 	static ErrorId UseLabel;
 	static ErrorId UseLabelo;
 	static ErrorId UseLabeld;
 	static ErrorId UseLabeli;
 	static ErrorId UseLabelSync;
 	static ErrorId UseLicense;
+	static ErrorId UseList;
 	static ErrorId UseLock;
+	static ErrorId UseLockstat;
 	static ErrorId UseLogin;
 	static ErrorId UseLogout;
 	static ErrorId UseLogger;
+	static ErrorId UseLogAppend;
+	static ErrorId UseLogParse;
+	static ErrorId UseLogRotate;
+	static ErrorId UseLogSchema;
+	static ErrorId UseLogstat;
 	static ErrorId UseLogtail;
 	static ErrorId UseMain;
 	static ErrorId UseMerge;
@@ -342,11 +393,17 @@ class MsgServer {
 	static ErrorId UseOpen2;
 	static ErrorId UseOpened;
 	static ErrorId UsePasswd;
+	static ErrorId UsePopulate;
+	static ErrorId UsePopulateb;
+	static ErrorId UsePopulateS;
+	static ErrorId UsePrint;
 	static ErrorId UseProtect;
 	static ErrorId UseProtects;
 	static ErrorId UsePull;
 	static ErrorId UsePurge;
 	static ErrorId UseRelease;
+	static ErrorId UseReload;
+	static ErrorId UseReconcile;
 	static ErrorId UseReopen;
 	static ErrorId UseResolve;
 	static ErrorId UseResolved;
@@ -355,6 +412,12 @@ class MsgServer {
 	static ErrorId UseReview;
 	static ErrorId UseReviews;
 	static ErrorId UseSearch;
+	static ErrorId UseServer;
+	static ErrorId UseServero;
+	static ErrorId UseServerd;
+	static ErrorId UseServeri;
+	static ErrorId UseServerid;
+	static ErrorId UseServers;
 	static ErrorId UseSizes;
 	static ErrorId UseShelve;
 	static ErrorId UseShelvec;
@@ -363,6 +426,7 @@ class MsgServer {
 	static ErrorId UseShelveNoOpts;
 	static ErrorId UseSnap;
 	static ErrorId UseSpec;
+	static ErrorId UseStatus;
 	static ErrorId UseStream;
 	static ErrorId UseStreamc;
 	static ErrorId UseStreamd;
@@ -372,6 +436,7 @@ class MsgServer {
 	static ErrorId UseSubmit;
 	static ErrorId UseSubmitc;
 	static ErrorId UseSubmitd;
+	static ErrorId UseSubmite;
 	static ErrorId UseSync;
 	static ErrorId UseSyncp;
 	static ErrorId UseSyncs;
@@ -380,6 +445,7 @@ class MsgServer {
 	static ErrorId UseTraiti;
 	static ErrorId UseTriggers;
 	static ErrorId UseTypeMap;
+	static ErrorId UseUnload;
 	static ErrorId UseUnlock;
 	static ErrorId UseUnshelve;
 	static ErrorId UseUser;
@@ -391,6 +457,7 @@ class MsgServer {
 	static ErrorId UseWhere;
 	static ErrorId NotAsService;
 	static ErrorId UseProxy;
+	static ErrorId UseProxyInfo;
 	static ErrorId UsePing;
 	static ErrorId UseMove;
 
@@ -398,13 +465,17 @@ class MsgServer {
 	static ErrorId ProxyChain;
 	static ErrorId ProxyDelivered;
 	static ErrorId RmtAuthFailed;
+	static ErrorId ServiceNotProvided;
 	static ErrorId ReplicaRestricted;
 	static ErrorId ReplicaNoUpgrade;
 	static ErrorId ReplicaBadOption;
+	static ErrorId ReplicaWrongClient;
 	static ErrorId UnknownReplicationMode;
 	static ErrorId MissingReplicationMode;
 	static ErrorId UnknownReplicationTarget;
+	static ErrorId P4TARGETWasSet;
 	static ErrorId ReplicaXferFailed;
+	static ErrorId BFNoOverwriteLocal;
 	static ErrorId BadPCache;
 	static ErrorId ProxyNoRemote;
 	static ErrorId ProxyUpdateFail;
@@ -414,13 +485,19 @@ class MsgServer {
 	static ErrorId NoTicketSupport;
 	static ErrorId CommandCancelled;
 	static ErrorId AdminNoSpecDepot;
+	static ErrorId AdminNoSuchSpec;
+	static ErrorId AdminPasswordNoSuchUser;
+	static ErrorId AdminPasswordNoPasswords;
 	static ErrorId ImportReport;
 	static ErrorId AdminReplicaCkp;
 	static ErrorId AdminNothingLocked;
 	static ErrorId AdminNothingLogged;
+	static ErrorId NoUserLogs;
 	static ErrorId AdminSizeData;
 	static ErrorId Move091;
 	static ErrorId Move101;
+	static ErrorId MoveRejected;
+	static ErrorId CommandDisabled;
 	static ErrorId ActionResolve111;
 	static ErrorId BadJournalNum;
 	static ErrorId BadCheckpointNum;
@@ -428,10 +505,15 @@ class MsgServer {
 	static ErrorId CurJournalButNotJournaling;
 	static ErrorId LogtailNoLog;
 	static ErrorId PullNotReplica;
+	static ErrorId PullOnDemand;
 	static ErrorId PullTransferSummary;
 	static ErrorId PullJournalSummary;
+	static ErrorId PullJournalDate;
+    static ErrorId ReplicaServerTime;
 	static ErrorId JournalCounterMismatch;
 
+	static ErrorId TransferCancelled;
+	static ErrorId NoSuchTransfer;
 	static ErrorId TransferNotReplica;
 	static ErrorId UsersCRNotReplica;
 	static ErrorId UsersCRNotBoth;
@@ -441,6 +523,7 @@ class MsgServer {
 	static ErrorId EmptyTypeList;
 	static ErrorId NotStreamReady;
 	static ErrorId NotStreamOwner;
+	static ErrorId VersionedStream;
 
 	static ErrorId BadSortOption;
 	static ErrorId TooManySortTraits;
@@ -448,6 +531,7 @@ class MsgServer {
 	static ErrorId InvalidStartupCommand;
 	static ErrorId StartupCommandError;
 	static ErrorId InvalidServerChain;
+	static ErrorId CommunicationLoop;
 
         static ErrorId InfoPingTime;
         static ErrorId InfoPingTimeB;
@@ -462,6 +546,15 @@ class MsgServer {
 	static ErrorId CopyDoNothing;
 	static ErrorId CopyNeedsMergeFirst;
 	static ErrorId MergeWrongDirection;
+	static ErrorId NoReparentingTask;
+
+	static ErrorId BoundClientExists;
+	static ErrorId BoundClientServerID;
+
+	static ErrorId UnloadDepotMissing;
+	static ErrorId UnloadOtherUser;
+	static ErrorId CantUnloadLocked;
+	static ErrorId TemporaryLabelInfo;
 
 	// Retired ErrorIds. We need to keep these so that clients 
 	// built with newer apis can commnunicate with older servers 
@@ -472,4 +565,5 @@ class MsgServer {
 	static ErrorId UseTunables; // DEPRECATED
 	static ErrorId UseDomains; // Used in 2009.1 through 2010.2
 	static ErrorId PullTransferPending; // Was used in 2010.2 BETA only.
+	static ErrorId PasswordTooShort; // DEPRECATED
 };

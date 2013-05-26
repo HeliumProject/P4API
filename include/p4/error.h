@@ -97,6 +97,11 @@ struct ErrorId {
 
 } ;
 
+struct ErrorIdMap {
+    ErrorId incomingError;
+    ErrorId outgoingError;
+};
+
 # define ErrorOf( sub, cod, sev, gen, arg ) \
 	((sev<<28)|(arg<<24)|(gen<<16)|(sub<<10)|cod)
 
@@ -104,7 +109,8 @@ enum ErrorFmtOps {
 	EF_PLAIN = 0x00,	// for info messages
 	EF_INDENT = 0x01,	// indent each line with \t
 	EF_NEWLINE = 0x02,	// terminate buffer with \n
-	EF_NOXLATE = 0x04	// don't use P4LANGUAGE formats
+	EF_NOXLATE = 0x04,	// don't use P4LANGUAGE formats
+	EF_CODE = 0x08		// include error code
 } ;
 
 /*
@@ -120,6 +126,7 @@ class Error {
 	void 		operator =( const Error &source );
 
 	void		Clear() { severity = E_EMPTY; }
+	const ErrorId  *MapError( const struct ErrorIdMap map[] );
 
 	int		Test() const { return severity > E_INFO; }
 	int		IsInfo() const { return severity == E_INFO; }
@@ -152,8 +159,19 @@ class Error {
 
 	void		Sys( const char *op, const char *arg );
 	void		Net( const char *op, const char *arg );
+	void		Net2( const char *op, const char *arg );
+	static bool	IsSysError(); // is there a global system error?
+	static bool	IsNetError(); // is there a global network error?
+	static bool	IsSysNetError(); // is there a global (system or network) error?
+	static int	GetNetError(); // return the last network error code
+	static void	SetNetError(int err); // set the "last" network error code
+	static StrPtr &	StrNetError(StrBuf &buf); // get text of last network error
+	static StrPtr &	StrError(StrBuf &buf); // get text of last system (or network) error
+	static StrPtr &	StrError(StrBuf &buf, int errnum); // get text of specified error
 
 	// Output
+
+	int		GetErrorCount() const;
 
 	ErrorId *	GetId( int i ) const;
 
@@ -167,6 +185,7 @@ class Error {
 	void		Fmt( StrBuf &buf, int opts ) const;
 	void		Fmt( StrBuf *buf, int opts = EF_NEWLINE ) const 
 			{ Fmt( *buf, opts ); }
+	void		Fmt( int i, StrBuf &buf, int opts ) const;
 
 	// Moving across client/server boundary
 	// 0 is pre-2002.1

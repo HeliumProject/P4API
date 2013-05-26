@@ -65,3 +65,26 @@ class DateTimeNow : public DateTime {
 
 } ;
 
+// Pass a buffer of at least this size to DateTimeHighPrecision::Fmt():
+
+# define DTHighPrecisionBufSize 40 
+
+/*
+ * Uses gettimeofday/clock_gettime/etc. to find more precise system time
+ */
+class DateTimeHighPrecision
+{
+    public:
+
+	void	Now();
+	void	Fmt( char *buf ) const;
+
+	time_t	Seconds() const;
+	int	Nanos() const;
+
+    private:
+
+	time_t	seconds; // Since 1/1/1970, natch
+	int	nanos;
+} ;
+

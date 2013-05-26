@@ -4,6 +4,7 @@
  * This file is part of Perforce - the FAST SCM System.
  */
 
+class StrPtr;
 class StrBuf;
 class ErrorLog;
 
@@ -24,10 +25,11 @@ enum P4DebugType {
 	DT_SERVER,	// Server
 	DT_SPEC,	// Spec
 	DT_TRACK,	// Track
-	DT_ZEROCONF,	// ZeroConf
 	DT_OB,		// Offline Broker
 	DT_VIEWGEN,     // Streamw view generator
 	DT_RPL,		// Distributed functionality related
+	DT_SSL,		// SSL related
+	DT_TIME,	// Add timestamps to debug output
 	DT_LAST
 }  ;
 
@@ -39,11 +41,13 @@ class P4Tunable {
 	void		Unset( const char *set );
     	int		Get( int t ) const { return list[t].value; }
     	int		GetLevel( const char *n ) const;
+    	int		GetIndex( const char *n ) const;
 	const char	*GetName( int t ) const { return list[t].name; }
 	int		IsSet( int t ) const { return list[t].isSet; }
 	int		IsSet( const char * n ) const;
 	int		IsKnown( const char * n );
 	int		IsNumeric( const char * n );
+	void		Unbuffer();
 
     protected:
 
@@ -60,6 +64,8 @@ class P4Tunable {
 
 } ;
 
+typedef void (*DebugOutputHook)( void *context, const StrPtr *buffer );
+
 class P4DebugConfig {
     public:
 	P4DebugConfig();
@@ -69,11 +75,17 @@ class P4DebugConfig {
 	virtual int Alloc( int );
 	void Install();
 	void SetErrorLog( ErrorLog *e ) { elog = e; }
+	void SetOutputHook( void *ctx, DebugOutputHook hk )
+		{ hook = hk; context = ctx; }
+
+	static void TsPid2StrBuf( StrBuf &prefix );
 
     protected:
 	StrBuf *buf;
 	int msz;
 	ErrorLog *elog;
+	DebugOutputHook hook;
+	void		*context;
 };
 
 class P4Debug : private P4Tunable {
@@ -89,13 +101,37 @@ class P4Debug : private P4Tunable {
 	void		ShowLevels( int showAll, StrBuf &buf );
 
 	void		Event();
+
 	void		printf( const char *fmt, ... );
 
-    private:
-
-	void		Unbuffer();
-
 };
+
+/*
+ * DEBUGPRINT and DEBUGPRINTF are generic debug macros.
+ * These macros simply check to see if the passed condition
+ * is true and if so prints out the message. The latter macro
+ * takes arguments.
+ *
+ * It is expected that the underlying sub-project will
+ * construct macros that that encapsulate the comparison
+ * of their area's debug flag against specific levels:
+ * e.g. # define DEBUG_SVR_ERROR ( p4debug.GetLevel( DT_SERVER ) >= 1 )
+ *      # define DEBUG_SVR_WARN	 ( p4debug.GetLevel( DT_SERVER ) >= 2 )
+ *      # define DEBUG_SVR_INFO  ( p4debug.GetLevel( DT_SERVER ) >= 4 )
+ */
+# define DEBUGPRINT(level, msg) \
+	do \
+	{ \
+	    if( level ) \
+		p4debug.printf( msg "\n" ); \
+	} while(0);
+
+# define DEBUGPRINTF( level, msg, ... ) \
+	do \
+	{ \
+	    if( level ) \
+		p4debug.printf(  msg "\n", __VA_ARGS__ ); \
+	} while(0);
 
 extern P4Debug p4debug;
 extern P4Tunable p4tunable;

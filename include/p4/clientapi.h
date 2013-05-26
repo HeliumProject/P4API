@@ -119,6 +119,7 @@
  *		and (so as to take permanent effect) then calls SetClient(),
  *		etc. to take immediate effect.
  *
+ *	ClientApi::GetBuild()
  *	ClientApi::GetCharset()
  *	ClientApi::GetClient()
  *	ClientApi::GetCwd()
@@ -173,6 +174,7 @@ class ClientApi : public StrDict {
 	void		SetCharset( const char *c );
 	void		SetClient( const char *c );
 	void		SetCwd( const char *c );
+	void		SetCwdNoReload( const char *c );
 	void		SetHost( const char *c );
 	void		SetLanguage( const char *c );
 	void		SetPassword( const char *c );
@@ -185,6 +187,7 @@ class ClientApi : public StrDict {
 	void		SetCharset( const StrPtr *c );
 	void		SetClient( const StrPtr *c );
 	void		SetCwd( const StrPtr *c );
+	void		SetCwdNoReload( const StrPtr *c );
 	void		SetHost( const StrPtr *c );
 	void		SetLanguage( const StrPtr *c );
 	void		SetPassword( const StrPtr *c );
@@ -206,6 +209,7 @@ class ClientApi : public StrDict {
 
 	const StrPtr	&GetCharset();
 	const StrPtr	&GetClient();
+	const StrPtr	&GetClientNoHost();
 	const StrPtr	&GetCwd();
 	const StrPtr	&GetHost();
 	const StrPtr	&GetLanguage();
@@ -214,6 +218,7 @@ class ClientApi : public StrDict {
 	const StrPtr	&GetPort();
 	const StrPtr	&GetUser();
 	const StrPtr	&GetConfig();
+	const StrPtr	&GetBuild();
 
 	void		SetIgnorePassword();
 
