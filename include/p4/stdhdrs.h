@@ -57,6 +57,7 @@
  * NEED_MMAP - mmap()
  * NEED_OPENDIR - opendir(), etc
  * NEED_POPEN - popen(), pclose()
+ * NEED_READLINK - readlink()
  * NEED_SIGNAL - signal()
  * NEED_SLEEP - Sleep()
  * NEED_SMARTHEAP - Smartheap Initialization
@@ -82,6 +83,7 @@
 	defined( NEED_GETPWUID ) || \
 	defined( NEED_GETUID ) || \
 	defined( NEED_BRK ) || \
+	defined( NEED_READLINK ) || \
 	defined( NEED_SLEEP )
 
 # ifndef OS_NT
@@ -99,6 +101,12 @@
      !defined( OS_AS400 ) && !defined( OS_MVS ) && \
      !defined( OS_LINUX ) && !defined( OS_DARWIN )
 # define HAVE_BRK
+# endif
+# endif
+
+# if defined( NEED_LSOF )
+# if defined( OS_LINUX ) || defined( OS_DARWIN )
+# define HAVE_LSOF
 # endif
 # endif
 
@@ -173,6 +181,10 @@ extern int errno;
 # endif // NEED_DBGBREAK
 # endif // OS_NT
 
+// Smart Heap instrumentation.
+# ifdef MEM_DEBUG
+# define NEED_SMARTHEAP
+# endif
 # ifdef NEED_SMARTHEAP
 # if defined( USE_SMARTHEAP )
 # ifdef OS_NT
@@ -390,6 +402,7 @@ extern "C" caddr_t mmap(const caddr_t, size_t, int, int, int, off_t);
 extern "C" int munmap(const caddr_t, size_t);
 # endif /* HPUX9 */
 # include <sys/mman.h>
+# define HAVE_MMAP_BTREES
 # endif /* NEED_MMAP */
 # endif /* HAVE_MMAP */
 
@@ -538,7 +551,6 @@ typedef unsigned long useconds_t;
 
 # define HAVE_TRUNCATE
 # if defined( OS_OS2 ) || \
-	defined( OS_NT ) || \
 	defined( MAC_MWPEF ) || \
 	defined( OS_BEOS ) || \
 	defined( OS_QNX ) || \
@@ -651,6 +663,13 @@ enum LineType { LineTypeRaw, LineTypeCr, LineTypeCrLf, LineTypeLfcrlf };
  */
 
 typedef P4INT64 offL_t;
+
+/*
+ * We use p4size_t rather than size_t in space-critical places such as
+ * StrPtr and StrBuf. 4GB ought to be enough for anyone, says Mr. Gates...
+ */
+
+typedef unsigned int p4size_t;
 
 # ifdef OS_MACOSX
 # define FOUR_CHAR_CONSTANT(_a, _b, _c, _d)       \

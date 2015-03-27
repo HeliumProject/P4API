@@ -25,13 +25,16 @@ struct P4Tag {
 	// client service methods
 
 	static const char c_Ack[];
+	static const char c_AckMatch[];
 	static const char c_ActionResolve[];
 	static const char c_CheckFile[];
 	static const char c_ReconcileEdit[];
 	static const char c_ChmodFile[];
 	static const char c_CloseDiff[];
 	static const char c_CloseFile[];
+	static const char c_CloseMatch[];
 	static const char c_CloseMerge[];
+	static const char c_ConvertFile[];
 	static const char c_Crypto[];
 	static const char c_DeleteFile[];
 	static const char c_EditData[];
@@ -42,6 +45,7 @@ struct P4Tag {
 	static const char c_Message[];
 	static const char c_OpenDiff[];
 	static const char c_OpenFile[];
+	static const char c_OpenMatch[];
 	static const char c_OpenMerge2[];
 	static const char c_OpenMerge3[];
 	static const char c_OutputBinary[];
@@ -55,12 +59,15 @@ struct P4Tag {
 	static const char c_MoveFile[];
 	static const char c_ReconcileAdd[];
 	static const char c_ReconcileFlush[];
+	static const char c_ReceiveFiles[];
+	static const char c_ExactMatch[];
 	static const char c_ScanDir[];
 	static const char c_SendFile[];
 	static const char c_SetPassword[];
 	static const char c_SSO[];
 	static const char c_WriteDiff[];
 	static const char c_WriteFile[];
+	static const char c_WriteMatch[];
 	static const char c_WriteMerge[];
 
 	// protocol service methods
@@ -82,6 +89,8 @@ struct P4Tag {
 	static const char v_action[];
 	static const char v_api[];
 	static const char v_app[];
+	static const char v_appliedJnl[];
+	static const char v_appliedPos[];
 	static const char v_attack[];
 	static const char v_attr[];
 	static const char v_authServer[];
@@ -95,7 +104,9 @@ struct P4Tag {
 	static const char v_change[];
 	static const char v_changeServer[];
 	static const char v_changeType[];
+	static const char v_charset[];
 	static const char v_clientAddress[];
+	static const char v_clientCase[];
 	static const char v_clientCwd[];
 	static const char v_clientFile[];
 	static const char v_clientHost[];
@@ -126,6 +137,7 @@ struct P4Tag {
 	static const char v_endToRev[];
 	static const char v_erev[];
 	static const char v_externalAuth[];
+	static const char v_ldapAuth[];
 	static const char v_extraTag[];
 	static const char v_extraTagType[];
 	static const char v_fatal[];
@@ -144,23 +156,32 @@ struct P4Tag {
 	static const char v_haveRev[];
 	static const char v_headAction[];
 	static const char v_headChange[];
+	static const char v_headCharset[];
+	static const char v_headContent[];
 	static const char v_headModTime[];
 	static const char v_headRev[];
 	static const char v_headTime[];
 	static const char v_headType[];
-	static const char v_headContent[];
 	static const char v_himark[];
 	static const char v_host[];
 	static const char v_how[];
 	static const char v_ignore[];
+	static const char v_initroot[];
 	static const char v_isgroup[];
+	static const char v_journalcopyFlags[];
 	static const char v_job[];
 	static const char v_jobstat[];
+	static const char v_jnlBatchSize[];
+	static const char v_journal[];
 	static const char v_key[];
 	static const char v_language[];
 	static const char v_lbrFile[];		// also remote depot
 	static const char v_lbrRev[];		// also remote depot
 	static const char v_lbrType[];		// also remote depot
+	static const char v_lbrReplication[];
+	static const char v_leof_num[];
+	static const char v_leof_sequence[];
+	static const char v_ldap[];
 	static const char v_level[];
 	static const char v_lfmt[];
 	static const char v_line[];
@@ -196,9 +217,11 @@ struct P4Tag {
 	static const char v_password[];
 	static const char v_path[];
 	static const char v_path2[];
+	static const char v_peeking[];
 	static const char v_perm[];
 	static const char v_permmax[];
 	static const char v_perms[];
+	static const char v_port[];
 	static const char v_preview[];
 	static const char v_prog[];
 	static const char v_progress[];
@@ -250,12 +273,14 @@ struct P4Tag {
 	static const char v_server2[];
 	static const char v_serverID[];
 	static const char v_serverAddress[];
+	static const char v_serverCluster[];
 	static const char v_serverDescription[];
 	static const char v_serverDate[];
 	static const char v_serverEncryption[];
 	static const char v_serverCertExpires[];
 	static const char v_serverName[];
 	static const char v_serverRoot[];
+	static const char v_serverType[];
 	static const char v_serverUptime[];
 	static const char v_serverLicense[];
 	static const char v_serverLicenseIp[];
@@ -316,6 +341,7 @@ struct P4Tag {
 	static const char v_baseDepotRec[];	// p4 resolve
 	static const char v_changeNo[];		// p4 submit 
 	static const char v_checkSum[];		// p4 submit 
+	static const char v_clientEntity[];
 	static const char v_confirm2[];
 	static const char v_dataHandle[];
 	static const char v_delete[];		// p4 index
@@ -325,6 +351,7 @@ struct P4Tag {
 	static const char v_depotRec[];
 	static const char v_do[];		// p4 diff
 	static const char v_doForce[];		// p4 shelve
+	static const char v_doPromote[];	// p4 shelve
 	static const char v_fixStatus[];	// p4 change
 	static const char v_force[];		// p4 submit
 	static const char v_getFlag[];
@@ -351,6 +378,7 @@ struct P4Tag {
 	static const char v_revRec[];		// proxy
 	static const char v_revtime[];		// proxy invalidation
 	static const char v_revver[];		// proxy rev table version
+	static const char v_role[];		// cluster role (svr svcs)
 	static const char v_save[];		// revert
 	static const char v_shelved[];          // shelve (2009.2)
 	static const char v_shelveFile[];
@@ -363,6 +391,7 @@ struct P4Tag {
 	static const char v_workRec[];
 	static const char v_workRec2[];
 	static const char v_yourDepotRec[];	// p4 resolve
+	static const char v_zksEntity[];	// zks socket write flock
 
 	// server user commands
 	
@@ -430,5 +459,18 @@ struct P4Tag {
 	static const char u_verify[];
 	static const char u_where[];
 
+	// server-p4zk message fields
+	static const char z_clusterid[];
+	static const char z_clusterrole[];
+	static const char z_genNum[];
+	static const char z_jnlnum[];
+	static const char z_jnloffst[];
+	static const char z_p4port[];
+	static const char z_p4target[];
+	static const char z_pid[];
+	static const char z_serverid[];
+	static const char z_zkhostport[];
+	static const char z_zkconnecttime[];
+	static const char z_brokercfg[];
 } ;
 

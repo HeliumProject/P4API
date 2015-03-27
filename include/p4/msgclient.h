@@ -60,6 +60,11 @@ class MsgClient {
 	static ErrorId DigestMisMatch;
 	static ErrorId NotUnderPath;
 
+	static ErrorId UnknownCharset;
+	static ErrorId FileKept;
+
+	static ErrorId LockCheckFail;
+
 	// Retired ErrorIds. We need to keep these so that clients 
 	// built with newer apis can commnunicate with older servers 
 	// still sending these.

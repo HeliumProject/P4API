@@ -169,6 +169,8 @@ class ClientMerge : public LastChance {
 	virtual void	Select( MergeStatus stat, Error *e ) = 0;
 	virtual void	Chmod( const char *perms, Error *e ) = 0;
 
+	virtual void	SetTheirModTime( StrPtr *modTime ) = 0;
+
 	// Chmod must use 'const char' as the type not 'char'
 	// The following will cause compile time errors for using 'char'
 

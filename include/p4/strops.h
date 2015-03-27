@@ -33,6 +33,7 @@
  *
  * 	StrOps::CharCnt() - Count characters in text using the server's charset
  * 	StrOps::CharCopy() - copy counting characters (not bytes)
+ *	StrOps::SafeLen() - Length of string including only complete characters
  *
  *	StrOps::UnpackInt() - extract an integer from front of buffer
  *	StrOps::UnpackInt64() - extract a long long from front of buffer
@@ -64,8 +65,10 @@ class StrOps {
 	static void	Caps( StrBuf &o );
 	static void	Dump( const StrPtr &o );
 	static void	Sub( StrPtr &string, char target, char replacement );
-	static void	Expand( StrBuf &o, const StrPtr &s, StrDict &d );
+	static void	Expand( StrBuf &o, const StrPtr &s, StrDict &d,
+	                        StrDict *u = 0 );
 	static void	Expand2( StrBuf &o, const StrPtr &s, StrDict &d );
+	static void	RmUniquote( StrBuf &o, const StrPtr &s );
 	static void	Indent( StrBuf &o, const StrPtr &s );
 	static void	Replace( StrBuf &o, const StrPtr &i,
 				const StrPtr &s, const StrPtr &r );
@@ -108,6 +111,7 @@ class StrOps {
 
 	static int	CharCnt( const StrPtr &i );
 	static void	CharCopy( const StrPtr &s, StrBuf &t, int length );
+	static int	SafeLen( const StrPtr &s );
 
 	// Marshalling
 

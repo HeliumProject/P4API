@@ -8,6 +8,7 @@ class CharSetUTF8Valid;
 class CharStep;
 class StrPtr;
 class StrBuf;
+class StrDict;
 
 /*
  * CharSetCvt.h - Character set converters
@@ -21,8 +22,12 @@ public:
 
     static CharSetCvt *FindCvt(CharSet from, CharSet to);
 
+    // do not delete  CharSetCvt* returned by FindCachedCvt.  They are kept in a global cache
+    static CharSetCvt *FindCachedCvt(CharSet from, CharSet to);
+
     virtual ~CharSetCvt();
 
+    // If you call reverse or clone you must delete the charset
     virtual CharSetCvt *Clone();
 
     virtual CharSetCvt *ReverseCvt();
@@ -62,6 +67,7 @@ public:
     static unsigned long minimumFromUTF8[];
 
 protected:
+    friend class CharSetCvtCache;  // for the following default constructor
     CharSetCvt() : lasterr(0), linecnt(1), charcnt(0), fastbuf(0), fastsize(0)
 	    {}
 

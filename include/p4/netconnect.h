@@ -49,6 +49,7 @@
 
 class KeepAlive;
 class NetTransport;
+class RpcZksClient;    // NetEndPoint's friend
 
 enum PeekResults
 {
@@ -68,7 +69,7 @@ struct NetIoPtrs {
 } ;
 
 class NetEndPoint {
-
+    friend class RpcZksClient;
     public:
 	static NetEndPoint *	Create( const char *addr, Error *e );
 	StrPtr 			GetAddress() { return ppaddr.HostPort(); }
@@ -109,6 +110,8 @@ class NetEndPoint {
     protected:
 	NetPortParser		ppaddr;		// parsed transport/host/service endpoint
 	bool			isAccepted;
+
+	virtual int		GetFd() { return -1; }; // method used by RpcZksClient
 } ;
 
 class NetTransport : public KeepAlive {
@@ -118,8 +121,17 @@ class NetTransport : public KeepAlive {
 	virtual void    ClientMismatch( Error *e );
 	virtual void	DoHandshake( Error * /* e */) {} // default: do nothing
 
+	virtual bool	HasAddress() = 0;
 	virtual StrPtr *GetAddress( int raf_flags ) = 0;
 	virtual StrPtr *GetPeerAddress( int raf_flags ) = 0;
+	virtual int	GetPortNum()
+	    		{
+			    return -1;
+			}
+	virtual bool	IsSockIPv6()
+	    		{
+			    return false;
+			}
 	virtual bool	IsAccepted() = 0;
 
 	virtual void	Send( const char *buffer, int length, Error *e ) = 0;

@@ -181,6 +181,7 @@ class ClientUser {
 	int		quiet;		// OutputInfo does nothing.
     protected:
 	int		outputCharset;	// P4CHARSET for output
+	StrBuf		editFile;
 } ;
 
 class ClientUserProgress : public ClientUser {

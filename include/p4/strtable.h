@@ -70,6 +70,7 @@ class StrBufDict : public StrDict {
 	void		VClear() { tabLength = 0; }
 
 	StrPtr *	GetVarN( const StrPtr &var );
+	StrBuf *	KeepOne( const StrPtr &var );
 
     private:
 	

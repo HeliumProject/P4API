@@ -28,6 +28,7 @@ struct EnviroItem;
 class Error;
 class StrBuf;
 class StrPtr;
+class FileSys;
 struct KeyPair;
 
 class Enviro {
@@ -42,12 +43,14 @@ class Enviro {
 		UPDATE,	// set via the Update call
 		ENV,	// set in environment
 		CONFIG,	// via P4CONFIG
+		ENVIRO,	// P4ENVIRO file
 		SVC,	// set in service-specific registry
 		USER,	// set in user registry
 		SYS 	// set is machine registry
 	};
 
-	void		BeServer( const StrPtr *name = 0 );
+	int		BeServer( const StrPtr *name = 0, int checkName = 0 );
+
 	const char      *ServiceName();
 	static const StrPtr *GetCachedServerName();
 	void		OsServer();
@@ -70,24 +73,29 @@ class Enviro {
 
 	void		Config( const StrPtr &cwd );
 	void		LoadConfig( const StrPtr &cwd, int checkSyntax = 1 );
+	void		LoadEnviro( int checkSyntax = 1 );
 
 	void		Reload();
 
-	void		Save( const char *const *vars, Error *e );
-
 	void		SetCharSet( int );	// for i18n support
-	int			GetCharSet();
+	int		GetCharSet();
 	
 	const StrPtr	&GetConfig();
+	void		SetEnviroFile( const char * );
+	const StrPtr	*GetEnviroFile();
 
     private:
 
 	EnviroTable	*symbolTab;
 	EnviroItem	*GetItem( const char *var );
+	void		ReadConfig( FileSys *, Error *, int, ItemType );
+	void		Setup();
 
 	bool		ReadItemPlatform( ItemType type, const char *var, EnviroItem * item );
+	int		SetEnviro( const char *var, const char *value, Error *e );
 
 	StrBuf		configFile;
+	StrBuf		enviroFile;
 	StrBuf		serviceName;
 
 	// used for netsslcredentials to get at service name

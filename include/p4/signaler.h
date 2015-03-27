@@ -33,6 +33,7 @@ class Signaler {
 
     public:
 			Signaler();
+			~Signaler();
 
 	void		Block();
 	void		Catch();

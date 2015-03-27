@@ -19,6 +19,7 @@ enum P4DebugType {
 	DT_MAP,		// MapTable
 	DT_NET,		// Net
 	DT_OPTIONS,	// Optional behavior
+	DT_PEEK,	// Peeking
 	DT_RCS,		// RCS
 	DT_RECORDS,	// VarRecords
 	DT_RPC,		// Rpc
@@ -30,6 +31,10 @@ enum P4DebugType {
 	DT_RPL,		// Distributed functionality related
 	DT_SSL,		// SSL related
 	DT_TIME,	// Add timestamps to debug output
+	DT_CLUSTER,	// Cluster related
+	DT_ZK,		// p4zk related
+	DT_LDAP,	// LDAP related
+	DT_DVCS,	// DVCS related
 	DT_LAST
 }  ;
 
@@ -48,6 +53,7 @@ class P4Tunable {
 	int		IsKnown( const char * n );
 	int		IsNumeric( const char * n );
 	void		Unbuffer();
+	void		UnsetAll();
 
     protected:
 

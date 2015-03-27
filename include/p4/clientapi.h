@@ -98,13 +98,13 @@
  *
  *	ClientApi::SetProg() - set the name of the application program,
  *		this will show up in 'p4 monitor' and server log output.
- *		Must be called after Init() it order to take affect.
+ *		Should be called before Init().
  *
  *	ClientApi::SetVersion() - sets the version string of the application.
  *		If not called, the version defaults to protocolClient. This
  *		will be appended to the program name in 'p4 monitor' and 
- *		server log output. Like SetProg(), it must be called after
- *		Init() to take effect.
+ *		server log output.  It should be called after Init() and
+ *		before each call to Run().
  *
  *	ClientApi::SetTicketFile() - set the location of the users ticketfile,
  *		must be the full pathname to the file and not a directory.
@@ -146,6 +146,7 @@
  */
 
 class Client;
+class Ignore;
 
 class ClientApi : public StrDict {
 
@@ -167,6 +168,8 @@ class ClientApi : public StrDict {
 	int		Final( Error *e );
 	int		Dropped();
 	int		GetErrors();
+	int		GetTrans();
+	int		IsUnicode();
 
 	void		RunTag( const char *func, ClientUser *ui );
 	void		WaitTag( ClientUser *ui = 0 );
@@ -176,6 +179,7 @@ class ClientApi : public StrDict {
 	void		SetCwd( const char *c );
 	void		SetCwdNoReload( const char *c );
 	void		SetHost( const char *c );
+	void		SetIgnoreFile( const char *c );
 	void		SetLanguage( const char *c );
 	void		SetPassword( const char *c );
 	void		SetPort( const char *c );
@@ -183,12 +187,14 @@ class ClientApi : public StrDict {
 	void		SetProg( const char *c );
 	void		SetVersion( const char *c );
 	void		SetTicketFile( const char *c );
+	void		SetEnviroFile( const char *c );
 
 	void		SetCharset( const StrPtr *c );
 	void		SetClient( const StrPtr *c );
 	void		SetCwd( const StrPtr *c );
 	void		SetCwdNoReload( const StrPtr *c );
 	void		SetHost( const StrPtr *c );
+	void		SetIgnoreFile( const StrPtr *c );
 	void		SetLanguage( const StrPtr *c );
 	void		SetPassword( const StrPtr *c );
 	void		SetPort( const StrPtr *c );
@@ -196,12 +202,14 @@ class ClientApi : public StrDict {
 	void		SetProg( const StrPtr *c );
 	void		SetVersion( const StrPtr *c );
 	void		SetTicketFile( const StrPtr *c );
+	void		SetEnviroFile( const StrPtr *c );
 
 	void		SetBreak( KeepAlive *k );
 
 	void		DefineCharset( const char *c, Error *e );
 	void		DefineClient( const char *c, Error *e );
 	void		DefineHost( const char *c, Error *e );
+	void		DefineIgnoreFile( const char *c, Error *e );
 	void		DefineLanguage( const char *c, Error *e );
 	void		DefinePassword( const char *c, Error *e );
 	void		DefinePort( const char *c, Error *e );
@@ -212,6 +220,7 @@ class ClientApi : public StrDict {
 	const StrPtr	&GetClientNoHost();
 	const StrPtr	&GetCwd();
 	const StrPtr	&GetHost();
+	const StrPtr	&GetIgnoreFile();
 	const StrPtr	&GetLanguage();
 	const StrPtr	&GetOs();
 	const StrPtr	&GetPassword();
@@ -219,6 +228,8 @@ class ClientApi : public StrDict {
 	const StrPtr	&GetUser();
 	const StrPtr	&GetConfig();
 	const StrPtr	&GetBuild();
+
+	Ignore *	GetIgnore();
 
 	void		SetIgnorePassword();
 

@@ -30,6 +30,8 @@ class StrArray {
 	int		Count() const ;
 	void		Sort( int caseFolding );
 	void		Remove( int i );
+	int		Search( const StrBuf *key );
+	const StrBuf *	Find( const StrBuf *key );
 
     private:
 

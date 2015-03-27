@@ -32,7 +32,9 @@ class DateTime {
 
 	void	Fmt( char *buf ) const;
 	void	FmtDay( char *buf ) const;
+	void	FmtDayUTC( char *buf ) const;
 	void	FmtTz( char *buf ) const;
+	void	FmtUTC( char *buf ) const;
 	void 	FmtElapsed( char *buf, const DateTime &t2 );
 	void	FmtUnifiedDiff( char *buf ) const;
 
@@ -56,6 +58,7 @@ class DateTime {
 	time_t	tval;
 	int	wholeDay;
 
+	int	ParseOffset( const char *s, const char *odate, Error *e );
 };
 
 class DateTimeNow : public DateTime {
@@ -76,11 +79,17 @@ class DateTimeHighPrecision
 {
     public:
 
+	        DateTimeHighPrecision() : seconds( 0 ), nanos( 0 ) { }
+
 	void	Now();
 	void	Fmt( char *buf ) const;
 
 	time_t	Seconds() const;
 	int	Nanos() const;
+
+	P4INT64 ElapsedNanos( const DateTimeHighPrecision &t1 );
+
+	void	FmtElapsed( StrBuf &buf, const DateTimeHighPrecision t2 ) const;
 
     private:
 

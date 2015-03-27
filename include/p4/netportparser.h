@@ -68,6 +68,12 @@ public:
 	WantIPv6() const;
 
 	bool
+	MayJSH() const;
+
+	bool
+	MustJSH() const;
+
+	bool
 	MayRSH() const;
 
 	bool
@@ -130,12 +136,19 @@ public:
 	void
 	Parse(const StrRef &portstr);
 
+	bool
+	IsValid(Error *e) const;
+
+	const StrBuf
+	GetQualifiedP4Port( StrBuf &serverSpecAddr, Error &e ) const;
+
 protected:
 
 private:
 	enum PrefixType
 	{
 	    PT_NONE,
+	    PT_JSH,	// java flavor of rsh
 	    PT_RSH,
 	    PT_TCP,
 	    PT_TCP4,
@@ -160,6 +173,7 @@ private:
 	StrBuf    mHost;          // parsed host string
 	StrBuf    mPort;          // parsed port string
 	StrBuf    mHostPort;      // parsed host+port string
+	bool      mPortColon;     // true iff there was a colon starting the port field
 	Prefix    mPrefix;        // parsed transport prefix
 
 private:

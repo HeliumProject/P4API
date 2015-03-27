@@ -38,7 +38,8 @@ class ClientProgressText : public ClientProgress
 	void	Done( int fail );
     private:
 	int	cnt;
-	int	first;
 	long	total;
 	int	typeOfProgress;
+	int	backup;
+	StrBuf	desc;
 };
