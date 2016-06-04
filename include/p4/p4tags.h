@@ -102,9 +102,12 @@ struct P4Tag {
 	static const char v_caddr[];
 	static const char v_caseHandling[];
 	static const char v_change[];
+	static const char v_changeIdentity[];
+	static const char v_changeImportedBy[];
 	static const char v_changeServer[];
 	static const char v_changeType[];
 	static const char v_charset[];
+	static const char v_checkpoint[];
 	static const char v_clientAddress[];
 	static const char v_clientCase[];
 	static const char v_clientCwd[];
@@ -142,6 +145,7 @@ struct P4Tag {
 	static const char v_extraTagType[];
 	static const char v_fatal[];
 	static const char v_fileCount[];
+	static const char v_fileNum[];
 	static const char v_fileSize[];
 	static const char v_file[];
 	static const char v_filter[];
@@ -200,6 +204,7 @@ struct P4Tag {
 	static const char v_mergePerms[];
 	static const char v_minClient[];
 	static const char v_monitor[];
+	static const char v_newServerId[];
 	static const char v_noBase[];
 	static const char v_nocase[];
 	static const char v_noclobber[];
@@ -318,6 +323,7 @@ struct P4Tag {
 	static const char v_unresolved[];
 	static const char v_upper[];
 	static const char v_user[];
+	static const char v_userChanged[];
 	static const char v_userName[];
 	static const char v_version[];
 	static const char v_warning[];
@@ -338,6 +344,7 @@ struct P4Tag {
 	static const char v_asBinary[];		// p4 resolve
 	static const char v_attrib[];		// p4 index
 	static const char v_author[];		// proxy keyword handling
+	static const char v_bkupInterval[];	// backup thread interval
 	static const char v_baseDepotRec[];	// p4 resolve
 	static const char v_changeNo[];		// p4 submit 
 	static const char v_checkSum[];		// p4 submit 
@@ -362,6 +369,7 @@ struct P4Tag {
 	static const char v_integRec2[];
 	static const char v_ipaddr[];
 	static const char v_keyVal[];		// p4 index
+	static const char v_labelEntity[];
 	static const char v_leaveUnchanged[];	// submit
 	static const char v_lockAll[];		// admin
 	static const char v_message[];		// p4 diff
@@ -380,6 +388,7 @@ struct P4Tag {
 	static const char v_revver[];		// proxy rev table version
 	static const char v_role[];		// cluster role (svr svcs)
 	static const char v_save[];		// revert
+	static const char v_setViews[];		// set client views even if empty
 	static const char v_shelved[];          // shelve (2009.2)
 	static const char v_shelveFile[];
 	static const char v_state[];
@@ -387,6 +396,7 @@ struct P4Tag {
 	static const char v_traitCount[];	// submit
 	static const char v_tzoffset[];		// server tz offset for proxy
 	static const char v_output[];		// proxy print kind
+	static const char v_unloadInterval[];	// unused client unload interval
 	static const char v_value[];		// p4 index
 	static const char v_workRec[];
 	static const char v_workRec2[];

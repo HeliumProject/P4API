@@ -83,6 +83,7 @@ class MsgRpc {
 	static ErrorId UnixDomainOpen;
 	static ErrorId BadP4Port;
 	static ErrorId NoHostnameForPort;
+	static ErrorId NoConnectionToZK;
 
 	// Retired ErrorIds. We need to keep these so that clients 
 	// built with newer apis can communicate with older servers

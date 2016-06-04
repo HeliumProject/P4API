@@ -115,6 +115,7 @@ class MsgSupp {
 	static ErrorId OptionSummary;
 	static ErrorId OptionShelved;
 	static ErrorId OptionUnload;
+	static ErrorId OptionUnloadLimit;
 	static ErrorId OptionOmitLazy;
 	static ErrorId OptionLeaveKeywords;
 	static ErrorId OptionOutputFile;
@@ -151,6 +152,7 @@ class MsgSupp {
 	static ErrorId OptionWipe;
 	static ErrorId OptionUnchanged;
 	static ErrorId OptionDepot;
+	static ErrorId OptionDepotType;
 	static ErrorId OptionKeepHead;
 	static ErrorId OptionPurge;
 	static ErrorId OptionForceText;
@@ -276,6 +278,12 @@ class MsgSupp {
 	static ErrorId OptionMainline;
 	static ErrorId OptionMoveChanges;
 	static ErrorId OptionRetainLbrRevisions;
+	static ErrorId OptionJavaProtocol;
+	static ErrorId OptionPullBatch;
+	static ErrorId OptionGlobalLock;
+	static ErrorId OptionEnableDVCSTriggers;
+	static ErrorId OptionUsers;
+	static ErrorId TooManyLockTrys;
 
 	// Retired ErrorIds. We need to keep these so that clients 
 	// built with newer apis can commnunicate with older servers 

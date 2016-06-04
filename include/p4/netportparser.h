@@ -121,6 +121,12 @@ public:
 	    return mPortString;
 	}
 
+	const StrPtr &
+	ZoneID() const
+	{
+	    return mZoneID;
+	}
+
 	// construct a StrBuf from the requested pieces
 	const StrBuf
 	String(PPOpts opts) const;
@@ -173,6 +179,7 @@ private:
 	StrBuf    mHost;          // parsed host string
 	StrBuf    mPort;          // parsed port string
 	StrBuf    mHostPort;      // parsed host+port string
+	StrBuf    mZoneID;        // parsed "%zoneid", if any
 	bool      mPortColon;     // true iff there was a colon starting the port field
 	Prefix    mPrefix;        // parsed transport prefix
 

@@ -224,4 +224,7 @@ class Error {
 # define IF_ERROR_STOP( e ) \
 	if( (e)->Test() ) \
 	    return;
+# define IF_ERROR_GOTO_FAIL( e ) \
+	if( (e)->Test() ) \
+	    goto fail;
 # endif /* __ERROR_H__ */

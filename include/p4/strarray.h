@@ -28,6 +28,7 @@ class StrArray {
 	const StrBuf *	Get(int i) const;
 	StrBuf *	Edit(int i);
 	int		Count() const ;
+	void		Clear();
 	void		Sort( int caseFolding );
 	void		Remove( int i );
 	int		Search( const StrBuf *key );

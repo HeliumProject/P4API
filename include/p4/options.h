@@ -103,6 +103,7 @@ class Options
 			NoIgnore       , // add -I
 			Downgrade      , // add -d
 			Unload         , // -U for unloaded objects
+			UnloadLimit    , // backup -u #
 			CentralUsers   , // users -c
 			ReplicaUsers   , // users -r
 			Branch         , // unshelve -b
@@ -118,6 +119,7 @@ class Options
 	                Owner          , // group -a
 	                Administrator  , // group -A
 	                Global         , // label/labelsync/tag -g
+	                GlobalLock     , // lock/opened -g
 	                StreamType     , // stream -t
 	                VirtualStream  , // stream -v
 	                Brief          , // changes -L, filelog -L
@@ -267,6 +269,8 @@ class Options
 			Mainline       , // switch -m
 			MoveChanges    , // switch -r
 			ReplicationStatus, // servers --replication-status, servers -J
+	                DepotType     , // depot -t
+	                Users         , // annotate -u
 
 		// options which have only long-form option names go here:
 
@@ -285,6 +289,9 @@ class Options
 			NonAcknowledging, // journalcopy --non-acknowledging
 			BypassExclusiveLock, // open --bypass-exclusive-lock
 			RetainLbrRevisions, // unzip --retain-lbr-revisions
+			JavaProtocol   , // p4d -i --java
+			PullBatch      , // pull -u --batch=N
+			EnableDVCSTriggers, // unzip --enable-dvcs-triggers
 
 			UnusedLastOption
 	} ;

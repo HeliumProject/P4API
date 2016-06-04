@@ -28,6 +28,7 @@ struct EnviroItem;
 class Error;
 class StrBuf;
 class StrPtr;
+class StrArray;
 class FileSys;
 struct KeyPair;
 
@@ -55,15 +56,15 @@ class Enviro {
 	static const StrPtr *GetCachedServerName();
 	void		OsServer();
 
-	void		List();
+	void		List( int quiet = 0 );
 	int		FormatVariable( int i, StrBuf *sb );
 	int		HasVariable( int i );
 	static int	IsKnown( const char *nm );
 	void		GetVarName( int i, StrBuf &sb );
 	void		GetVarValue( int i, StrBuf &sb );
-	void		Format( const char *var, StrBuf *sb );
+	void		Format( const char *var, StrBuf *sb, int quiet = 0 );
 
-	void		Print( const char *var );
+	void		Print( const char *var, int quiet = 0 );
 	char		*Get( const char *var );
 	void		Set( const char *var, const char *value, Error *e );
 	void		Update( const char *var, const char *value );
@@ -81,8 +82,10 @@ class Enviro {
 	int		GetCharSet();
 	
 	const StrPtr	&GetConfig();
+	const StrArray	*GetConfigs();
 	void		SetEnviroFile( const char * );
 	const StrPtr	*GetEnviroFile();
+	int		GetHome( StrBuf &result );
 
     private:
 
@@ -93,8 +96,9 @@ class Enviro {
 
 	bool		ReadItemPlatform( ItemType type, const char *var, EnviroItem * item );
 	int		SetEnviro( const char *var, const char *value, Error *e );
-
+	
 	StrBuf		configFile;
+	StrArray	*configFiles;
 	StrBuf		enviroFile;
 	StrBuf		serviceName;
 
@@ -106,9 +110,7 @@ class Enviro {
 	KeyPair		*serviceKey;
 	StrBuf		serviceKeyName;
 	int		charset;
-# elif defined ( OS_MACOSX ) || defined ( OS_DARWIN )
-	ItemType        domain; // set to Enviro::USER or Enviro::SYS
-#endif /* OS_NT, OS_MACOSX, OS_DARWIN */
+# endif /* OS_NT */
 
 } ;
 

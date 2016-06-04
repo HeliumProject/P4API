@@ -86,6 +86,7 @@
  */
 
 class StrBuf;
+class StrNum;
 
 // On 64 bit platforms, the base 'size_t' type is 64 bits, which is much
 // more than we need, or can handle. So we use our own size_t type instead;
@@ -130,13 +131,13 @@ class StrPtr {
 		{ return Atoi64( buffer ); }
 
 	void	SetLength() 
-		{ length = strlen( buffer ); }
+		{ length = (p4size_t)strlen( buffer ); }
 
 	void	SetLength( p4size_t len )
 		{ length = len; }
 
 	void	SetEnd( char *p ) 
-		{ length = p - buffer; }
+		{ length = (p4size_t)(p - buffer); }
 
 	char	operator[]( p4size_t x ) const
 		{ return buffer[x]; }
@@ -237,6 +238,13 @@ class StrPtr {
 	void	StrCat( char *b ) const
 		{ memcpy( b + strlen( b ), buffer, length + 1 ); }
 
+	// check for identical underlying objects or overlaps
+
+	bool	CheckSame( const StrPtr *a ) const
+	    { return Text() == a->Text() && Length() == a->Length(); }
+	bool	CheckOverlap( const StrPtr *a ) const
+	    { return End() > a->Text() && a->End() > Text(); }
+
 	// Formatting and parsing numbers as strings
 
 	static int Atoi( const char *b ) { return atoi( b ); }
@@ -324,7 +332,7 @@ class StrRef : public StrPtr {
 		{ buffer += l; length -= l; }
 
 	void 	Set( char *buf )
-		{ Set( buf, strlen( buf ) ); }
+		{ Set( buf, (p4size_t)strlen( buf ) ); }
 		 
 	void	Set( char *buf, p4size_t len )
 		{ buffer = buf; length = len; }
@@ -367,21 +375,16 @@ class StrBuf : public StrPtr {
 		{ StringInit(); Set( buf ); }
 
 	const StrBuf & operator =(const StrBuf &s)
-		{ if( this != &s ) Set( &s ); return *this; }
+		{ Set( &s ); return *this; }
 
 	const StrBuf & operator =(const StrRef &s)
-		{ if( (const StrRef *)this != &s ) Set( &s ); return *this; }
+		{ Set( &s ); return *this; }
 
 	const StrBuf & operator =(const StrPtr &s)
-		{ if( this != &s ) Set( &s ); return *this; }
+		{ Set( &s ); return *this; }
 
 	const StrBuf & operator =(const char *buf)
-		{
-		    if( (const char*)this != buf && buffer != buf )
-			Set( buf );
-
-		    return *this;
-		}
+		{ if( (const char*)this != buf ) Set( buf ); return *this; }
 
 	// Setting, getting
 
@@ -412,10 +415,10 @@ class StrBuf : public StrPtr {
 	    { if( buf == Text() ) SetLength(); else { Clear(); Append( buf ); } }
 
 	void	Set( const StrPtr *s )
-	    { if( s != this ) { Clear(); UAppend( s ); } }
+	    { if( s->Text() != Text() ) { Clear(); UAppend( s ); } }
 
 	void	Set( const StrPtr &s )
-	    { if( &s != this ) { Clear(); UAppend( &s ); } }
+	    { if( s.Text() != Text() ) { Clear(); UAppend( &s ); } }
 
 	void	Set( const char *buf, p4size_t len )
 	    { if( buf == Text() ) SetLength( len ); else { Clear(); Append( buf, len ); } }
@@ -508,6 +511,9 @@ class StrBuf : public StrPtr {
 	StrBuf& operator <<( const StrPtr &s )
 		{ Append( &s ); return *this; }
 
+	StrBuf& operator <<( const StrNum &s )
+		{ UAppend( (const StrPtr *)&s ); return *this; }
+
 	StrBuf& operator <<( int v );
 
     private:
@@ -552,13 +558,13 @@ class StrNum : public StrPtr {
 	void	Set( int v )
 		{
 		    buffer = Itoa( v, buf + sizeof( buf ) );
-		    length = buf + sizeof( buf ) - buffer - 1;
+		    length = (p4size_t)(buf + sizeof( buf ) - buffer - 1);
 		}
 
 	void	SetHex( int v )
 		{
 		    buffer = Itox( v, buf + sizeof( buf ) );
-		    length = buf + sizeof( buf ) - buffer - 1;
+		    length = (p4size_t)(buf + sizeof( buf ) - buffer - 1);
 		}
 
 	void	Set( int v, int digits )
@@ -579,7 +585,7 @@ class StrNum : public StrPtr {
 	void	Set( P4INT64 v )
 		{
 		    buffer = Itoa64( v, buf + sizeof( buf ) );
-		    length = buf + sizeof( buf ) - buffer - 1;
+		    length = (p4size_t)(buf + sizeof( buf ) - buffer - 1);
 		}
 
 # endif
@@ -605,9 +611,14 @@ class StrHuman : public StrPtr
 	        void	Convert( P4INT64 v, int f )
 	        {
 	            buffer = Itoa64( v, buf + sizeof( buf ), f );
-	            length = buf + sizeof( buf ) - buffer - 1;
+	            length = (p4size_t)(buf + sizeof( buf ) - buffer - 1);
 	        }
 
 	    char buf[24];
 } ;
 
+inline StrBuf &
+StrBuf::operator <<( int v )
+{
+	return operator <<( StrNum( v ) );
+}

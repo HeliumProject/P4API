@@ -103,9 +103,12 @@ class StrOps {
 		       		int delim = ' ', const char *unsafeChars = 0);
 
 	static void     CommonPath( StrBuf &o, int &mdir, const StrPtr &n );
+	static void     GetDepotFileExtension( const StrBuf &path, StrBuf &ext );
 	static void     GetDepotName( const char *d, StrBuf &n );
 	static void	StripNewline( StrBuf &o );
 	static void	LFtoCRLF( const StrBuf *in, StrBuf *out );
+	static int      StreamNameInPath( const char *df, int depth, 
+	                        StrBuf &n );
 
 	// i18n
 

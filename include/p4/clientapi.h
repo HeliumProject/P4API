@@ -109,6 +109,11 @@
  *	ClientApi::SetTicketFile() - set the location of the users ticketfile,
  *		must be the full pathname to the file and not a directory.
  *
+ *	ClientApi::SetExecutable() - set the location of the physical client
+ *		executable program file. This is needed by the network
+ *	        parallelism features (parallel sync/submit etc.) so that they
+ *	        can spawn more copies of the program as needed.
+ *
  *	ClientApi::DefineCharset()
  *	ClientApi::DefineClient()
  *	ClientApi::DefineHost()
@@ -123,6 +128,7 @@
  *	ClientApi::GetCharset()
  *	ClientApi::GetClient()
  *	ClientApi::GetCwd()
+ *	ClientApi::GetExecutable()
  *	ClientApi::GetHost()
  *	ClientApi::GetLanguage()
  *	ClientApi::GetOs()
@@ -193,6 +199,7 @@ class ClientApi : public StrDict {
 	void		SetClient( const StrPtr *c );
 	void		SetCwd( const StrPtr *c );
 	void		SetCwdNoReload( const StrPtr *c );
+	void		SetExecutable( const StrPtr *c );
 	void		SetHost( const StrPtr *c );
 	void		SetIgnoreFile( const StrPtr *c );
 	void		SetLanguage( const StrPtr *c );
@@ -219,14 +226,17 @@ class ClientApi : public StrDict {
 	const StrPtr	&GetClient();
 	const StrPtr	&GetClientNoHost();
 	const StrPtr	&GetCwd();
+	const StrPtr	&GetExecutable();
 	const StrPtr	&GetHost();
 	const StrPtr	&GetIgnoreFile();
 	const StrPtr	&GetLanguage();
 	const StrPtr	&GetOs();
 	const StrPtr	&GetPassword();
+	const StrPtr	&GetPassword( const StrPtr *user );
 	const StrPtr	&GetPort();
 	const StrPtr	&GetUser();
 	const StrPtr	&GetConfig();
+	const StrArray	*GetConfigs();
 	const StrPtr	&GetBuild();
 
 	Ignore *	GetIgnore();

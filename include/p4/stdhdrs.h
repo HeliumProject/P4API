@@ -201,13 +201,10 @@ extern int errno;
 # include <windows.h>
 # include <io.h>
 # endif
-# ifdef unix
+# ifdef __unix__
 # include <sys/file.h>
 # ifdef LOCK_UN
-// 2.96 linux ia64 declares it with a __THROW
-# ifndef __THROW
 extern "C" int flock( int, int );
-# endif
 # endif
 # endif
 # endif
@@ -482,6 +479,18 @@ extern "C" int socketpair(int, int, int, int*);
 # if defined(NEED_TIME_HP)
 #    if defined( OS_LINUX )
 #       define HAVE_CLOCK_GETTIME
+#       if ( __GLIBC_PREREQ( 2, 10 ) && \
+             ( defined(_BSD_SOURCE) || \
+               _XOPEN_SOURCE >= 700  || \
+               _POSIX_C_SOURCE >= 200809L ) ) || \
+           ( !__GLIBC_PREREQ( 2, 10 ) && \
+             __GLIBC_PREREQ( 2, 6 ) && \
+             defined(_ATFILE_SOURCE) )
+#            define HAVE_UTIMENSAT
+#       else
+#           define HAVE_GETTIMEOFDAY
+#           include <sys/time.h>
+#       endif
 #    elif defined( OS_NT )
 #       define WIN32_LEAN_AND_MEAN
 #       include <windows.h>
@@ -510,6 +519,16 @@ using namespace std;
 # if ( defined( OS_NT ) || defined( OS_OS2 ) ) && !defined(__BORLANDC__)
 # include <sys/utime.h>
 # else
+# include <utime.h>
+# endif
+# endif
+
+# define HAVE_UTIMES
+# ifdef NEED_UTIMES
+# if ( defined( OS_NT ) || defined( OS_OS2 ) ) && !defined(__BORLANDC__)
+# include <sys/utime.h>
+# else
+# include <sys/types.h>
 # include <utime.h>
 # endif
 # endif

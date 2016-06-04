@@ -11,6 +11,9 @@
 class MsgDm {
 
     public:
+	static ErrorId DevMsg;
+	static ErrorId DevErr;
+
 	static ErrorId DescMissing;
 	static ErrorId NoSuchChange;
 	static ErrorId AlreadyCommitted;
@@ -77,6 +80,7 @@ class MsgDm {
 	static ErrorId ParallelOptions;
 	static ErrorId ParSubOptions;
 	static ErrorId ParallelNotEnabled;
+	static ErrorId ParThreadsTooMany;
 	static ErrorId DepotMissing;
 	static ErrorId UnloadDepotMissing;
 	static ErrorId ReloadNotOwner;
@@ -169,6 +173,7 @@ class MsgDm {
 	static ErrorId CantChangeUnloadedOpt;
 	static ErrorId NoUnloadedAutoLabel;
 	static ErrorId StreamIsUnloaded;
+	static ErrorId NoStorageDir;
 	static ErrorId NotAsService;
 	static ErrorId LockedClient;
 	static ErrorId LockedHost;
@@ -191,6 +196,9 @@ class MsgDm {
 	static ErrorId TwistedMap;
 	static ErrorId EmptyResults;
 	static ErrorId LimitBadArg;
+	static ErrorId BadChangeMap;
+	static ErrorId LabelNotAutomatic;
+	static ErrorId LabelRevNotChange;
 
 	static ErrorId NoDelete;
 	static ErrorId NoCheckin;
@@ -210,6 +218,7 @@ class MsgDm {
 	static ErrorId RmtAddDomainFailed;
 	static ErrorId RmtDeleteDomainFailed;
 	static ErrorId RmtExclusiveLockFailed;
+	static ErrorId RmtGlobalLockFailed;
 	static ErrorId RemoteDomainExists;
 	static ErrorId RemoteDomainMissing;
 
@@ -249,6 +258,8 @@ class MsgDm {
 	static ErrorId BucketSkipType;
 	static ErrorId BucketSkipBranched;
 	static ErrorId BucketSkipBucketed;
+	static ErrorId BucketSkipResolving;
+	static ErrorId BucketSkipShelving;
 	static ErrorId BucketNoFilesToArchive;
 	static ErrorId BucketNoFilesToRestore;
 	static ErrorId BucketNoFilesToPurge;
@@ -298,12 +309,16 @@ class MsgDm {
 	static ErrorId DepotNoChange;
 	static ErrorId DepotDelete;
 	static ErrorId DepotHasStreams;
+	static ErrorId DepotNotEmptyNoChange;
 	static ErrorId DepotSpecDup;
+	static ErrorId DepotTypeDup;
 	static ErrorId DepotUnloadDup;
 	static ErrorId NoDepotTypeChange;
 	static ErrorId DepotMapInvalid;
 	static ErrorId DepotNotStream;
 	static ErrorId DepotNotSpec;
+	static ErrorId DepotDepthDiffers;
+	static ErrorId DepotStreamDepthReq;
 	static ErrorId ImportNotUnder;
 	static ErrorId InvalidParent;
 	static ErrorId StreamOverflow;
@@ -323,6 +338,7 @@ class MsgDm {
 	static ErrorId StreamConverted;
 	static ErrorId StreamParentIsTask;
 	static ErrorId StreamBadConvert;
+	static ErrorId StreamDepthDiffers;
 
 	static ErrorId DepotsData;
 	static ErrorId DepotsDataExtra;
@@ -471,6 +487,7 @@ class MsgDm {
 	static ErrorId LockSuccess;
 	static ErrorId LockAlready;
 	static ErrorId LockAlreadyOther;
+	static ErrorId LockAlreadyCommit;
 	static ErrorId LockNoPermission;
 
 	static ErrorId UnLockSuccess;
@@ -652,7 +669,23 @@ class MsgDm {
 	static ErrorId StreamHasChildren;
 	static ErrorId StreamHasClients;
 	static ErrorId StreamOwnerReq;
+	static ErrorId StreamOpened;
+	static ErrorId StreamIsOpen;
+	static ErrorId StreamReverted;
+	static ErrorId StreamShelveMismatch;
+	static ErrorId StreamNotOpen;
+	static ErrorId StreamSwitchOpen;
+	static ErrorId StreamMustResolve;
+	static ErrorId StreamShelved;
+	static ErrorId StreamUnshelved;
+	static ErrorId StreamOpenBadType;
+	static ErrorId StreamTaskAndImport;
 	static ErrorId ClientNoSwitch;
+
+	static ErrorId StreamResolve;
+	static ErrorId StreamResolved;
+	static ErrorId StreamResolveField;
+	static ErrorId StreamResolveAction;
 
 	static ErrorId SubmitUpToDate;
 	static ErrorId SubmitWasAdd;
@@ -737,6 +770,8 @@ class MsgDm {
 	static ErrorId ExSTREAM;
 	static ErrorId ExUSER;
 
+	static ErrorId ExSTREAMOPEN;
+
 	static ErrorId ExVIEW;
 	static ErrorId ExVIEW2;
 	static ErrorId ExSVIEW;
@@ -755,6 +790,7 @@ class MsgDm {
 	static ErrorId ExDIFF;
 	static ErrorId ExDIFFPre101;
 	static ErrorId ExDIGESTED;
+	static ErrorId ExUNLOADED;
 	static ErrorId ExFILE;
 	static ErrorId ExHAVE;
 	static ErrorId ExINTEGED;
@@ -824,6 +860,8 @@ class MsgDm {
 	static ErrorId DiskSpaceMinimum;
 	static ErrorId DiskSpaceEstimated;
 
+	static ErrorId JoinMax1TooSmall;
+
 	static ErrorId LocWild;
 	static ErrorId EmbWild;
 	static ErrorId EmbSpecChar;
@@ -850,6 +888,7 @@ class MsgDm {
 	static ErrorId ImportedFile;
 	static ErrorId ImportedIntegration;
 	static ErrorId ImportSkippedChange;
+	static ErrorId ImportWouldAddChange;
 	static ErrorId ImportSkippedFile;
 	static ErrorId ImportSkippedInteg;
 	static ErrorId ImportDanglingInteg;
@@ -873,11 +912,17 @@ class MsgDm {
 	static ErrorId UnsubmitArchived;
 	static ErrorId UnsubmitTaskStream;
 	static ErrorId UnsubmitNotSubmitted;
+	static ErrorId UnsubmitEmptyChange;
 	static ErrorId UnsubmitWrongUser;
 	static ErrorId UnsubmitWrongClient;
 	static ErrorId UnsubmitIntegrated;
 	static ErrorId UnsubmitNoInteg;
 	static ErrorId UnsubmitNoChanges;
+	static ErrorId ChangeIdentityAlready;
+	static ErrorId ReservedClientName;
+	static ErrorId CannotChangeStorageType;
+	static ErrorId ServerLocksOrder;
+	static ErrorId RevChangedDuringPush;
 
 	// Retired ErrorIds. We need to keep these so that clients 
 	// built with newer apis can commnunicate with older servers 

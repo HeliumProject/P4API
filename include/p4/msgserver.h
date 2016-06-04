@@ -74,6 +74,7 @@ class MsgServer {
 	static ErrorId LoginUser;
 	static ErrorId LoginGoodTill;
 	static ErrorId LoginNoTicket;
+	static ErrorId LogingInUser;
 	static ErrorId LogoutUser;
 	static ErrorId LoggedOut;
 	static ErrorId Login032;
@@ -101,6 +102,11 @@ class MsgServer {
 	static ErrorId SubmitNeedsShelved;
 	static ErrorId CounterWarning;
 	static ErrorId CouldntLock;
+	static ErrorId LockedOnCommit;
+	static ErrorId LockLocalError;
+	static ErrorId LockGlobalError;
+	static ErrorId NoGlobalLock;
+	static ErrorId UnlockGlobalError;
 	static ErrorId MergesPending;
 	static ErrorId RetypeInvalidTempobj;
 	static ErrorId ResolveOrRevert;
@@ -160,6 +166,7 @@ class MsgServer {
 	static ErrorId ConfigureUnSet;
 	static ErrorId NotThisConfigVar;
 	static ErrorId InvalidConfigValue;
+	static ErrorId InvalidConfigScope;
 	static ErrorId ConfigureNone;
 	static ErrorId ConfigureServerNone;
 
@@ -213,6 +220,8 @@ class MsgServer {
 	static ErrorId InfoProxyCertExpire;
 	static ErrorId InfoAuthServer;
 	static ErrorId InfoServerID;
+	static ErrorId InfoServerServices;
+	static ErrorId InfoServerReplica;
 	static ErrorId InfoChangeServer;
 	static ErrorId InfoCaseHandling;
 	static ErrorId InfoMinClient;
@@ -281,6 +290,8 @@ class MsgServer {
 
 	static ErrorId DeltaLine1;
 	static ErrorId DeltaLine2;
+	static ErrorId DeltaLine3;
+	static ErrorId DeltaLine4;
 
 	static ErrorId MonitorDisabled;
 	static ErrorId MonitorBadId;
@@ -299,6 +310,7 @@ class MsgServer {
 	static ErrorId UseAdminSetLdapUsers;
 	static ErrorId UseAnnotate;
 	static ErrorId UseArchive;
+	static ErrorId UseBackup;	// added in nimble
 	static ErrorId UseBranch;
 	static ErrorId UseBrancho;
 	static ErrorId UseBranchd;
@@ -382,6 +394,7 @@ class MsgServer {
 	static ErrorId UseJournals;
 	static ErrorId UseJournalcopy;
 	static ErrorId UseJournalWait;
+	static ErrorId UseDurableWait;
 	static ErrorId UseKey;
 	static ErrorId UseKeyi;
 	static ErrorId UseKeys;
@@ -402,8 +415,10 @@ class MsgServer {
 	static ErrorId UseLicense;
 	static ErrorId UseList;
 	static ErrorId UseLock;
+	static ErrorId UseLockg;
 	static ErrorId UseLockstat;
 	static ErrorId UseLogin;
+	static ErrorId UseLoginr;
 	static ErrorId UseLogout;
 	static ErrorId UseLogger;
 	static ErrorId UseLogAppend;
@@ -433,6 +448,7 @@ class MsgServer {
 	static ErrorId UsePrint;
 	static ErrorId UseProtect;
 	static ErrorId UseProtects;
+	static ErrorId UseProtectsM;
 	static ErrorId UsePrune;
 	static ErrorId UsePull;
 	static ErrorId UsePurge;
@@ -440,6 +456,7 @@ class MsgServer {
 	static ErrorId UseRelease;
 	static ErrorId UseReload;
 	static ErrorId UseReconcile;
+	static ErrorId UseRecFlush;
 	static ErrorId UseRemote;
 	static ErrorId UseRemoteo;
 	static ErrorId UseRemoted;
@@ -470,11 +487,15 @@ class MsgServer {
 	static ErrorId UseSnap;
 	static ErrorId UseSpec;
 	static ErrorId UseStatus;
+	static ErrorId UseStatusFlush;
 	static ErrorId UseStream;
 	static ErrorId UseStreamc;
 	static ErrorId UseStreamd;
 	static ErrorId UseStreami;
 	static ErrorId UseStreamo;
+	static ErrorId UseStreamEdit;
+	static ErrorId UseStreamResolve;
+	static ErrorId UseStreamRevert;
 	static ErrorId UseStreams;
 	static ErrorId UseSubmit;
 	static ErrorId UseSubmitc;
@@ -528,6 +549,8 @@ class MsgServer {
 	static ErrorId MissingReplicationMode;
 	static ErrorId UnknownReplicationTarget;
 	static ErrorId P4TARGETWasSet;
+	static ErrorId P4TARGETWasNotSet;
+	static ErrorId CommitServerOverrides;
 	static ErrorId ReplicaXferFailed;
 	static ErrorId BFNoOverwriteLocal;
 	static ErrorId BadPCache;
@@ -562,6 +585,8 @@ class MsgServer {
 	static ErrorId CurJournalButNotJournaling;
 	static ErrorId LogtailNoLog;
 	static ErrorId CachepurgeNotReplica;
+	static ErrorId CachepurgeBadMode;
+	static ErrorId ReplicaCacheConfig;
 	static ErrorId PullNotReplica;
 	static ErrorId PullCommandRunning;
 	static ErrorId PullOnDemand;
@@ -620,6 +645,7 @@ class MsgServer {
 	static ErrorId UnloadDepotMissing;
 	static ErrorId UnloadOtherUser;
 	static ErrorId CantUnloadLocked;
+	static ErrorId CantUnloadReadOnly;
 	static ErrorId TemporaryLabelInfo;
 	static ErrorId TargetAccessFailed;
 	static ErrorId ChangeNotSubmitted;
@@ -627,6 +653,7 @@ class MsgServer {
 	static ErrorId NotInCluster;
 	static ErrorId NotClusterStandby;
 	static ErrorId NotClusterMaster;
+	static ErrorId OpNotAllowedOnRole;
 
 	static ErrorId NotWorkspaceSvr;
 	static ErrorId ClusterCannotWriteJournal;
@@ -637,7 +664,9 @@ class MsgServer {
 	static ErrorId MaitModeRestricted;
 
 	static ErrorId NotDistributed;
+	static ErrorId NotEdge;
 	static ErrorId PortMissing;
+	static ErrorId NoteHookError;
 	static ErrorId NewUserExists;
 	static ErrorId NewUserHasChanges;
 	static ErrorId NewUserHasDomains;
@@ -654,6 +683,7 @@ class MsgServer {
 	static ErrorId LdapAuthSuccessD;
 	static ErrorId LdapAuthFailed;
 	static ErrorId LdapAuthFailedR;
+	static ErrorId LdapAuthFailedSasl;
 	static ErrorId LdapAuthFailedD;
 	static ErrorId LdapNoSupport;
 	static ErrorId LdapAuthNone;
@@ -680,6 +710,9 @@ class MsgServer {
 	static ErrorId LdapSyncGrpBadConf;
 	static ErrorId LdapSyncGrpNotFound;
 	static ErrorId LdapMustBeEnabled;
+	static ErrorId LdapNoSearchConfig;
+	static ErrorId LdapNoAttrConfig;
+	static ErrorId LdapNoAttrsFound;
 
 	static ErrorId SwitchBranchData;
 	static ErrorId SwitchBranchDataMatch;
@@ -689,7 +722,10 @@ class MsgServer {
 	static ErrorId SwitchNeedsInit;
 	static ErrorId SwitchNotEmpty;
 	static ErrorId SwitchFilesUnresolved;
+	static ErrorId SwitchAtChange;
 
+	static ErrorId PushTriggersFailed;
+	static ErrorId PushClientExists;
 	static ErrorId PushPerformance;
 	static ErrorId ResubmitPrompt;
 	static ErrorId ConflictingChange;
@@ -697,7 +733,9 @@ class MsgServer {
 	static ErrorId CannotResubmitNotUnshelved;
 	static ErrorId CannotResubmitChange;
 	static ErrorId ResolveUnsubmitted;
+	static ErrorId SubmitUnsubmitted;
 	static ErrorId RemoteMappingInvalid;
+	static ErrorId RemoteNoTarget;
 	static ErrorId UnsubmittedChanges;
 	static ErrorId CurrentUnsubmitted;
 	static ErrorId InvalidResubmitChoice;
@@ -707,22 +745,36 @@ class MsgServer {
 	static ErrorId PushSucceeded;
 	static ErrorId FetchSucceeded;
 	static ErrorId DVCSNotConfigured;
+	static ErrorId AttrNoDVCS;
 	static ErrorId UseFetchInstead;
 	static ErrorId PushHadConflict;
 	static ErrorId FetchHadConflict;
 	static ErrorId PushDidNothing;
 	static ErrorId FetchDidNothing;
+	static ErrorId FetchCopiedArchives;
 	static ErrorId FetchDidUnsubmit;
 	static ErrorId FetchDidTangent;
 	static ErrorId FetchNeedsResubmit;
-	static ErrorId PushCryptoError;
-	static ErrorId FetchCryptoError;
+	static ErrorId PushCryptoError1;
+	static ErrorId FetchCryptoError1;
 	static ErrorId CannotFetchOpened;
 	static ErrorId ResolveThenResume;
+	static ErrorId ReviewThenResume;
 	static ErrorId BadLocation;
+	static ErrorId JournalRotationFail;
+	static ErrorId JournalFalseEOF;
+	static ErrorId AddressMismatch;
+	static ErrorId ClientRejected;
+	static ErrorId OpenReadOnly;
+	static ErrorId ClientTooOldToSkipXfer;
+
+	//nimble
+	static ErrorId BackupOff;		// added in nimble
+	static ErrorId BackupExiting;	// added in nimble
+	static ErrorId BackupBadSvr;		// added in nimble
 
 	// Retired ErrorIds. We need to keep these so that clients 
-	// built with newer apis can commnunicate with older servers 
+	// built with newer apis can communicate with older servers
 	// still sending these.
 
 	static ErrorId UseAdminCopyin; // DEPRECATED
@@ -733,4 +785,6 @@ class MsgServer {
 	static ErrorId PasswordTooShort; // DEPRECATED
 	static ErrorId SubmitShelvedHasTask; // used in 2013.1 only
 	static ErrorId NotClusterService; // Not documented in any release but in 13.2-14.1
+	static ErrorId PushCryptoError; // DEPRECATED used in 15.1-2
+	static ErrorId FetchCryptoError; // DEPRECATED used in 15.1-2
 };

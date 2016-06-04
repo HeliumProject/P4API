@@ -150,6 +150,12 @@ enum SpecFmt {
 	SDF_INDENT	// indented
 } ;
 
+enum SpecOpen {
+	SDO_NOTOPEN,	// default, field does not isolate to a client at all
+	SDO_ISOLATE,	// field is isolated when a spec is opened
+	SDO_PROPAGATE	// as ISOLATE, plus field propagates on integrate
+} ;
+
 class Spec {
 
     public:
@@ -245,15 +251,22 @@ class SpecElem {
 	SpecFmt		GetFmt() { return fmt; }
 	int		GetSeq() { return seq; }
 
+	// Open access
+
+	int		IsOpenable() { return open != SDO_NOTOPEN; }
+	int		IsPropagating() { return open == SDO_PROPAGATE; }
+
 	// Type building -- so jobspec can create a spec
 
 	const char *	FmtOpt();
 	const char *	FmtType();
 	const char *	FmtFmt();
+	const char *	FmtOpen();
 	void		SetSeq( int s ) { seq = s; }
 	void 		SetOpt( const char *optName, Error *e );
 	void 		SetFmt( const char *fmtName, Error *e );
 	void		SetType( const char *s, Error *e );
+	void		SetOpen( const char *openName, Error *e );
 
 	int		Compare( const SpecElem &other );
 
@@ -268,6 +281,7 @@ class SpecElem {
 	char		nWords;		// how many words on the line
 	short		maxLength;	// advisory
 	SpecOpt		opt;		// how field is updated
+	SpecOpen	open;		// how field is opened
 	char		maxWords;	// max words on the line.  Streams
 
     private:

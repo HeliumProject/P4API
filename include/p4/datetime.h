@@ -64,7 +64,7 @@ class DateTime {
 class DateTimeNow : public DateTime {
 
     public:
-		DateTimeNow() : DateTime( (int)Now() ) {}
+		DateTimeNow() { Set( Now() ); }
 
 } ;
 
@@ -79,7 +79,45 @@ class DateTimeHighPrecision
 {
     public:
 
-	        DateTimeHighPrecision() : seconds( 0 ), nanos( 0 ) { }
+	// Orthodox Canonical Form (OCF) methods (we don't need a dtor)
+	        DateTimeHighPrecision(time_t secs = 0, int nsecs = 0)
+		    : seconds( secs ), nanos( nsecs ) { }
+
+	        DateTimeHighPrecision(const DateTimeHighPrecision &rhs)
+		    : seconds( rhs.seconds ), nanos( rhs.nanos ) { }
+
+	DateTimeHighPrecision &
+		operator=( const DateTimeHighPrecision &rhs );
+
+	DateTimeHighPrecision &
+		operator+=( const DateTimeHighPrecision &rhs );
+
+	DateTimeHighPrecision &
+		operator-=( const DateTimeHighPrecision &rhs );
+
+	bool
+	operator==(
+		const DateTimeHighPrecision &rhs) const;
+
+	bool
+	operator!=(
+		const DateTimeHighPrecision &rhs) const;
+
+	bool
+	operator<(
+		const DateTimeHighPrecision &rhs) const;
+
+	bool
+	operator<=(
+		const DateTimeHighPrecision &rhs) const;
+
+	bool
+	operator>(
+		const DateTimeHighPrecision &rhs) const;
+
+	bool
+	operator>=(
+		const DateTimeHighPrecision &rhs) const;
 
 	void	Now();
 	void	Fmt( char *buf ) const;
@@ -87,11 +125,18 @@ class DateTimeHighPrecision
 	time_t	Seconds() const;
 	int	Nanos() const;
 
-	P4INT64 ElapsedNanos( const DateTimeHighPrecision &t1 );
+	bool	IsZero() const { return seconds == 0 && nanos == 0; }
+
+	// return (t2 - *this) in nanoseconds
+	P4INT64 ElapsedNanos( const DateTimeHighPrecision &t2 ) const;
 
 	void	FmtElapsed( StrBuf &buf, const DateTimeHighPrecision t2 ) const;
+	// return < 0, = 0, or > 0 if *this < rhs, *this == rhs, or *this > rhs, respectively
+	int 	Compare( const DateTimeHighPrecision &rhs ) const;
 
     private:
+
+	P4INT64	ToNanos() const;
 
 	time_t	seconds; // Since 1/1/1970, natch
 	int	nanos;

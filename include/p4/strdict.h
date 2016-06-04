@@ -67,6 +67,9 @@ class StrDict {
 
 	int	GetVar( int x, StrRef &var, StrRef &val )
 		{ return VGetVarX( x, var, val ); }
+	
+	int	GetVarCCompare( const char *var, StrBuf &val );
+	int	GetVarCCompare( const StrPtr &var, StrBuf &val );
 
 	void	ReplaceVar( const char *var, const char *value );
 	void	ReplaceVar( const StrPtr &var, const StrPtr &value );

@@ -92,6 +92,7 @@ enum FileSysType
 	FST_EMPTY =	0x000B,	// file is empty
 	FST_UNICODE =	0x000C,	// file is unicode
 	FST_UTF16 =	0x000E,	// stream is utf8 convert to utf16
+	FST_UTF8 =	0x000F, // stream is utf8, might have BOM handling
 
 	FST_MASK =	0x000F,	// mask for types
 
@@ -137,6 +138,7 @@ enum FileSysType
 	FST_XAPPLEFILE =0x0302,	// executable apple format binary
 	FST_XUNICODE =	0x010C,	// executable unicode text
 	FST_XUTF16 =	0x010E,	// stream is utf8 convert to utf16
+	FST_XUTF8 =	0x010F,	// stream is utf8 BOM handling
 	FST_RCS =	0x1041,	// RCS temporary file: raw text, sync on close
 	FST_GZIP =	0x0802,	// file is gzip
 	FST_GUNZIP =	0x0c02,	// stream is gzip
@@ -174,10 +176,18 @@ enum FilePerm {
 	FPM_RWXO	// set file read-write-execute (owner)
 } ;
 
+enum LFNModeFlags {
+	LFN_ENABLED 	= 0x01,
+	LFN_UNCPATH	= 0x02,
+	LFN_UTF8	= 0x04,
+} ;
+
 class StrArray;
 class CharSetCvt;
 class MD5;
 class StrBuf;
+
+class DateTimeHighPrecision;	// for the high-precision modtime calls
 
 class DiskSpaceInfo {
 
@@ -213,6 +223,9 @@ class FileSys {
 				f->MakeGlobalTemp();
 				return f;
 			}
+
+	// special temp for simple locking
+	static FileSys *CreateLock( FileSys *, Error * );
 
 	static FilePerm Perm( const char *p );
 
@@ -268,10 +281,12 @@ class FileSys {
 	int		IsTextual() { 
 				return ( type & FST_MASK ) == FST_TEXT || 
 				       ( type & FST_MASK ) == FST_UNICODE ||
+				       ( type & FST_MASK ) == FST_UTF8 ||
 				       ( type & FST_MASK ) == FST_UTF16;
 			}
 	int		IsUnicode() { 
 				return ( type & FST_MASK ) == FST_UNICODE ||
+				       ( type & FST_MASK ) == FST_UTF8 ||
 				       ( type & FST_MASK ) == FST_UTF16;
 			}
 	int             IsSymlink() {
@@ -286,6 +301,7 @@ class FileSys {
 
 # ifdef OS_NT
 	virtual void	SetLFN( const StrPtr &name );
+	virtual int	GetLFN( ) {return LFN;}
 # endif
 	virtual void	Set( const StrPtr &name );
 	virtual void	Set( const StrPtr &name, Error *e );
@@ -301,15 +317,17 @@ class FileSys {
 
 	virtual int	Stat() = 0;
 	virtual int	StatModTime() = 0;
+	virtual void	StatModTimeHP(DateTimeHighPrecision *modTime);
 	virtual void	Truncate( Error *e ) = 0;
 	virtual void	Truncate( offL_t offset, Error *e ) = 0;
 	virtual void	Unlink( Error *e = 0 ) = 0;
 	virtual void	Rename( FileSys *target, Error *e ) = 0;
 	virtual void	Chmod( FilePerm perms, Error *e ) = 0;
 	virtual void	ChmodTime( Error *e ) = 0;
-	virtual void	SetAttribute( FileSysAttr attrs, Error *e ) { };
+	virtual void	ChmodTimeHP( const DateTimeHighPrecision & /* modTime */, Error * /* e */ ) {};
+	virtual void	SetAttribute( FileSysAttr, Error * ) { };
 
-	virtual void	Fsync( Error *e ) { }
+	virtual void	Fsync( Error * ) { }
 
 	// NB: these for ReadFile only; interface will likely change
 	virtual bool	HasOnlyPerm( FilePerm perms );

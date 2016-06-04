@@ -23,6 +23,7 @@ class Enviro;
 class HostEnv {
 
     public:
+	static void	GetCwdbyCS( StrBuf &result, int charset );
 	int		GetCwd( StrBuf &result, Enviro * = 0 );
 	int		GetHost( StrBuf &result );
 	int		GetUser( StrBuf &result, Enviro * = 0 );

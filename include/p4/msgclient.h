@@ -63,7 +63,34 @@ class MsgClient {
 	static ErrorId UnknownCharset;
 	static ErrorId FileKept;
 
+	static ErrorId ChdirFail;
 	static ErrorId LockCheckFail;
+	
+	static ErrorId InitRootExists;
+	static ErrorId NoDvcsServer;
+
+	static ErrorId InitServerFail;
+	static ErrorId CloneCantFetch;
+	static ErrorId NotValidStreamName;
+	static ErrorId CloneStart;
+	static ErrorId CloneNeedLogin1;
+	static ErrorId CloneNeedLogin2;
+	static ErrorId CloneTooWide;
+	static ErrorId CloneRemoteInvalid;
+	static ErrorId CloneTooManyDepots;
+	static ErrorId CloneNoRemote;
+	static ErrorId ClonePathNoMap;
+	static ErrorId ClonePathTooWide;
+	static ErrorId ClonePathHasWild;
+	static ErrorId ClonePathHasIllegal;
+	static ErrorId RemoteAlreadySet;
+	static ErrorId NoRemoteToSet;
+	static ErrorId InitCaseFlagUnset;
+	static ErrorId InitUnicodeUnset;
+	static ErrorId CloneFetchCounts;
+	static ErrorId LocalRemoteMismatch;
+	static ErrorId RemoteLocalMismatch;
+
 
 	// Retired ErrorIds. We need to keep these so that clients 
 	// built with newer apis can commnunicate with older servers 
